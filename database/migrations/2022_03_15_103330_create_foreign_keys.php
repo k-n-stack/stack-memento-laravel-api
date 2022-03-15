@@ -39,6 +39,10 @@ class CreateForeignKeys extends Migration
             $table->foreign('friend_id')->references('id')->on('users');
             $table->foreign('thread_id')->references('id')->on('threads');
         });
+        Schema::table('threads', function(Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('share_id')->references('id')->on('users');
+        });
         Schema::table('bookmark_thread', function(Blueprint $table) {
             $table->foreign('bookmark_id')->references('id')->on('bookmarks');
             $table->foreign('thread_id')->references('id')->on('threads');
@@ -56,8 +60,9 @@ class CreateForeignKeys extends Migration
             $table->foreign('owner_id')->references('id')->on('users');
         });
         Schema::table('group_user', function(Blueprint $table) {
-            $table->foreign('group_id')->references('id')->on('groups');
-            $table->foreign('user_id')->references('id')->on('users');
+            // $table->foreign('group_id')->references('id')->on('groups');
+            // $table->foreign('user_id')->references('id')->on('users');
+            $table->foreignId('user_id')->constrained('users');
         });
         Schema::table('group_user_suggestions', function(Blueprint $table) {
             $table->foreign('group_id')->references('id')->on('groups');
@@ -83,7 +88,7 @@ class CreateForeignKeys extends Migration
         Schema::table('searchs', function(Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users');
         });
-        Schema::table('revorked_group_owners', function(Blueprint $table) {
+        Schema::table('revoked_group_owners', function(Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('group_id')->references('id')->on('groups');
         });
