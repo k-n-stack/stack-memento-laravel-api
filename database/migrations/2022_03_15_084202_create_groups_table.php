@@ -16,8 +16,8 @@ class CreateGroupsTable extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('owner_id');
-            $table->string('name', 30);
-            $table->string('image_url');
+            $table->string('name', 32);
+            $table->string('image_url', 64);
             $table->timestamps();
             $table->softDeletes();
         });

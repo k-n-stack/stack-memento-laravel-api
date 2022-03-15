@@ -18,7 +18,6 @@ class CreateSearchsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('search_string', 128);
-            $table->string('category', 64);
             $table->timestamps();
         });
     }

@@ -17,7 +17,7 @@ class CreateGroupThreadTable extends Migration
         Schema::create('group_thread', function (Blueprint $table) {
             $table->unsignedBigInteger('group_id');
             $table->unsignedBigInteger('thread_id');
-            $table->timestamp('ban_at');
+            $table->timestamp('banned_at')->nullable(); // When thread is banned by group owner
             $table->timestamps();
             $table->softDeletes();
         });

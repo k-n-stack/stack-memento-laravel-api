@@ -15,8 +15,9 @@ class CreateBookmarksTable extends Migration
     {
         Schema::create('bookmarks', function (Blueprint $table) {
             $table->id();
-            $table->longText('description');
             $table->string('url', 512);
+            $table->longText('description', 128);
+            $table->timestamp('validated_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

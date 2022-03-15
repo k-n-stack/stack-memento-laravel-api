@@ -15,12 +15,11 @@ class CreateThreadsTable extends Migration
     {
         Schema::create('threads', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->index();
-            $table->unsignedBigInteger('share_id')->index();
-            $table->string('title', 30);
-            $table->boolean('is_private');
-            $table->string('image_url');
-            $table->string('color', 6);
+            $table->unsignedBigInteger('user_id');
+            $table->string('title', 32);
+            $table->enum('visibility', ['private', 'shareable', 'control', 'public']);
+            $table->string('image_url', 64);
+            $table->string('color', 6)->default('000000');
             $table->timestamps();
             $table->softDeletes();
         });

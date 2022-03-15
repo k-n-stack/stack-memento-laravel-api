@@ -18,8 +18,8 @@ class CreateCommentsTable extends Migration
             $table->unsignedBigInteger('poster_id');
             $table->unsignedBigInteger('parent_id');
             $table->unsignedBigInteger('bookmark_id');
-            $table->longText('body');
-            $table->boolean('is_valid');
+            $table->longText('body', 2048);
+            $table->timestamp('validated_at')->nullable(); // validate by admin for global
             $table->timestamps();
             $table->softDeletes();
         });
