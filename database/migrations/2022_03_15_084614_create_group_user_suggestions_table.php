@@ -15,9 +15,9 @@ class CreateGroupUserSuggestionsTable extends Migration
     {
         // GROUP_USER_SUGGESTION (group_id, user_id, sponsor_id, is_valid, created_at, deleted_at)
         Schema::create('group_user_suggestions', function (Blueprint $table) {
-            $table->unsignedInteger('group_id');
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('sponsor_id');
+            $table->unsignedBigInteger('group_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('sponsor_id');
             $table->boolean('is_valid');
             $table->timestamps();
             $table->softDeletes();

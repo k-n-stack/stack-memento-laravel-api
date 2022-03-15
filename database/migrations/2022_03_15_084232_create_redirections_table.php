@@ -14,8 +14,8 @@ class CreateRedirectionsTable extends Migration
     public function up()
     {
         Schema::create('redirections', function (Blueprint $table) {
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('bookmark_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('bookmark_id');
             $table->timestamps();
         });
     }

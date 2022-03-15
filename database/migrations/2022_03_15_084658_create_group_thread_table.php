@@ -15,8 +15,8 @@ class CreateGroupThreadTable extends Migration
     {
         // GROUP_THREAD (group_id, thread_id, subscribed_at, deleted_at, ban_at)
         Schema::create('group_thread', function (Blueprint $table) {
-            $table->unsignedInteger('group_id');
-            $table->unsignedInteger('thread_id');
+            $table->unsignedBigInteger('group_id');
+            $table->unsignedBigInteger('thread_id');
             $table->timestamp('ban_at');
             $table->timestamps();
             $table->softDeletes();

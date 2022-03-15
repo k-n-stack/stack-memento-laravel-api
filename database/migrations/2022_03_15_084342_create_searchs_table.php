@@ -16,7 +16,7 @@ class CreateSearchsTable extends Migration
         // SEARCH (id, user_id, search_string, category, search_at)
         Schema::create('searchs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->string('search_string', 128);
             $table->string('category', 64);
             $table->timestamps();

@@ -15,8 +15,8 @@ class CreateThreadsTable extends Migration
     {
         Schema::create('threads', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('share_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('share_id');
             $table->string('title', 30);
             $table->boolean('is_private');
             $table->string('image_url');

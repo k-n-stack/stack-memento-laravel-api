@@ -15,8 +15,8 @@ class CreateBookmarkThreadTable extends Migration
     {
         // BOOKMARK_THREAD (bookmark_id, thread_id)
         Schema::create('bookmark_thread', function (Blueprint $table) {
-            $table->unsignedInteger('bookmark_id');
-            $table->unsignedInteger('thread_id');
+            $table->unsignedBigInteger('bookmark_id');
+            $table->unsignedBigInteger('thread_id');
         });
     }
 

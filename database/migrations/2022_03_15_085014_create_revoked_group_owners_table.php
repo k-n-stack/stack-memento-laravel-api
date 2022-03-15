@@ -15,8 +15,8 @@ class CreateRevokedGroupOwnersTable extends Migration
     {
         // REVOKED_GROUP_OWNER (user_id, group_id, revoked_at)
         Schema::create('revoked_group_owners', function (Blueprint $table) {
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('group_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('group_id');
             $table->softDeletes();
         });
     }
