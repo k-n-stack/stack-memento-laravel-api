@@ -16,7 +16,6 @@ class SearchFactory extends Factory
         return [
             'user_id' => $this->faker->numberBetween(1, 99),
             'search_string' => $this->faker->realText(30),
-            'category' => $this->faker->bs(),
         ];
     }
 }

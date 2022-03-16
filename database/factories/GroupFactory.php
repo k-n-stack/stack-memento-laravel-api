@@ -16,7 +16,7 @@ class GroupFactory extends Factory
         return [
             'owner_id' => $this->faker->numberBetween(1, 99),
             'name' => $this->faker->catchPhrase(),
-            'image_url' => $this->faker->url(),
+            'image_url' => '0123456.png',
         ];
     }
 }

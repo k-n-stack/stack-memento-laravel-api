@@ -14,7 +14,8 @@ class TagFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->company(),
+            'validated_at' => $this->faker->dateTime(),
         ];
     }
 }

@@ -14,11 +14,10 @@ class CommentFactory extends Factory
     public function definition()
     {
         return [
-            'body' => $this->faker->realText(100),
             'poster_id' => $this->faker->numberBetween(1, 99),
-            'parent_id' => $this->faker->numberBetween(1, 99),
             'bookmark_id' => $this->faker->numberBetween(1, 99),
-            'is_valid' => $this->faker->boolean(),
+            'body' => $this->faker->realText(100),
+            'validated_at' => $this->faker->date(),
         ];
     }
 }

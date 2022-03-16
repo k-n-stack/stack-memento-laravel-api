@@ -41,7 +41,7 @@ class CreateForeignKeys extends Migration
         });
         Schema::table('comments', function(Blueprint $table) {
             $table->foreign('poster_id')->references('id')->on('users');
-            $table->foreign('parent_id')->references('id')->on('comments');
+            $table->foreign('parent_id')->nullable()->references('id')->on('comments');
             $table->foreign('bookmark_id')->references('id')->on('bookmarks');
         });
         Schema::table('groups', function(Blueprint $table) {
@@ -55,7 +55,7 @@ class CreateForeignKeys extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('bookmark_id')->references('id')->on('bookmarks');
         });
-        Schema::table('searchs', function(Blueprint $table) {
+        Schema::table('searches', function(Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users');
         });
         Schema::table('friend_thread', function(Blueprint $table) {

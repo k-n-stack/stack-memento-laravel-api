@@ -14,8 +14,9 @@ class BookmarkFactory extends Factory
     public function definition()
     {
         return [
-            'description' => $this->faker->realText(50),
             'url' => $this->faker->url(),
+            'description' => $this->faker->realText(50),
+            'validated_at' => $this->faker->date(),
         ];
     }
 }
