@@ -1,5 +1,7 @@
 <?php
 
+
+
 use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FriendController;
@@ -24,19 +26,40 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('/login', [App\Http\Controllers\AuthController::class, 'login']);
+
+Route::get('/login', [
+    'as' => 'login',
+    'uses' => function () {
+        return ['status' => 'unauthenticated'];
+    }
+]);
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResources([
-    'bookmarks' => BookmarkController::class,
-    'comments' => CommentController::class,
-    'friends' => FriendController::class,
-    'groups' => GroupController::class,
-    'redirections' => RedirectionController::class,
-    'searches' => SearchController::class,
-    'tags' => TagController::class,
-    'threads' => ThreadController::class,
-    'users' => UserController::class,
-    'votes' => VoteController::class,
-]);
+Route::group([
+    'middleware' => [
+        'auth:sanctum',
+    ],
+], function () {
+
+    Route::apiResources([
+        'bookmarks' => BookmarkController::class,
+        'comments' => CommentController::class,
+        'friends' => FriendController::class,
+        'groups' => GroupController::class,
+        'redirections' => RedirectionController::class,
+        'searches' => SearchController::class,
+        'tags' => TagController::class,
+        'threads' => ThreadController::class,
+        'users' => UserController::class,
+        'votes' => VoteController::class,
+    ]);
+
+});
+
+Route::fallback(function () {
+    return ['status' => 'unauthorized'];
+});
