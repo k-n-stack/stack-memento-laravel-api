@@ -5,7 +5,29 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Thread;
+use App\Models\Comment;
+use App\Models\Vote;
+use App\Models\Redirection;
+
 class Bookmark extends Model
 {
     use HasFactory;
+
+    public function threads() {
+        return $this->belongsToMany(Thread::class);
+    }
+
+    public function comments() {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function votes() {
+        return $this->hasMany(Vote::class);
+    }
+
+    public function redirections() {
+        return $this->hasMany(Redirection::class);
+    }
+
 }

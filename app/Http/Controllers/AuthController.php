@@ -20,7 +20,6 @@ class AuthController extends Controller
                 'pseudonym' => '',
                 'image_url' => '',
                 'email_verified_at' => '',
-                'ip' => $request->ip,
             ];
         }
 
