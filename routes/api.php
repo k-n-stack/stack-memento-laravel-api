@@ -35,6 +35,13 @@ Route::get('/login', [
     }
 ]);
 
+Route::get('/test', function () {
+    return ['get' => 'foo'];
+});
+Route::post('/test', function () {
+    return ['post' => 'bar'];
+});
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
