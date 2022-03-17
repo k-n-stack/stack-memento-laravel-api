@@ -63,10 +63,4 @@ class UserController extends Controller
     {
         //
     }
-
-    public function getUserThreads(Request $request) {
-        // $user = self::where('email', $request['email'])->firstOrFail();
-        return Auth::id();
-    
-    }
 }

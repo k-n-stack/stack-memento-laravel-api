@@ -14,7 +14,7 @@ class GroupFactory extends Factory
     public function definition()
     {
         return [
-            'owner_id' => $this->faker->numberBetween(1, 99),
+            'owner_id' => $this->faker->numberBetween(1, 20),
             'name' => $this->faker->catchPhrase(),
             'image_url' => '0123456.png',
         ];

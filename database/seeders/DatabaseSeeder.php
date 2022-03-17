@@ -23,8 +23,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+
         User::factory()
-            ->count(100)
+            ->count(20)
             ->create();
 
         Friend::factory()
@@ -32,34 +33,34 @@ class DatabaseSeeder extends Seeder
             ->create();
 
         Thread::factory()
-            ->count(100)
+            ->count(40)
             ->create();
 
         Bookmark::factory()
-            ->count(100)
-            ->create();
-
-        Comment::factory()
             ->count(200)
             ->create();
 
+        Comment::factory()
+            ->count(300)
+            ->create();
+
         Group::factory()
-            ->count(100)
+            ->count(30)
             ->create();
 
         // Redirections
         for ($i = 0; $i < 100; $i++) {
             DB::table('redirections')->insert([
-                'user_id' => rand(1, 99),
-                'bookmark_id' => rand(1, 99),
+                'user_id' => rand(1, 20),
+                'bookmark_id' => rand(1, 200),
             ]);
         }
 
         // Votes
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 300; $i++) {
             DB::table('votes')->insert([
-                'user_id' => rand(1, 99),
-                'bookmark_id' => rand(1, 99),
+                'user_id' => rand(1, 20),
+                'bookmark_id' => rand(1, 200),
             ]);
         }
 
@@ -74,57 +75,57 @@ class DatabaseSeeder extends Seeder
         // FriendThreads
         for ($i = 0; $i < 100; $i++) {
             DB::table('friend_thread')->insert([
-                'friend_id' => 100,
-                'thread_id' => rand(1, 99),
+                'friend_id' => 1,
+                'thread_id' => rand(1, 40),
             ]);
         }
 
         // BookmarkThreads
         for ($i = 0; $i < 100; $i++) {
             DB::table('bookmark_thread')->insert([
-                'bookmark_id' => rand(1, 99),
-                'thread_id' => rand(1, 99),
+                'bookmark_id' => rand(1, 200),
+                'thread_id' => rand(1, 40),
             ]);
         }
 
         // BookmarkTags
         for ($i = 0; $i < 100; $i++) {
             DB::table('bookmark_tag')->insert([
-                'bookmark_id' => rand(1, 99),
-                'tag_id' => rand(1, 99),
+                'bookmark_id' => rand(1, 200),
+                'tag_id' => rand(1, 100),
             ]);
         }
 
         // GroupsUsers
         for ($i = 0; $i < 100; $i++) {
             DB::table('group_user')->insert([
-                'group_id' => rand(1, 99),
-                'user_id' => rand(1, 99),
-                'sponsor_id' => rand(1, 99),
+                'group_id' => rand(1, 30),
+                'user_id' => rand(1, 20),
+                'sponsor_id' => 2,
             ]);
         }
 
         // GroupsThreads
         for ($i = 0; $i < 100; $i++) {
             DB::table('group_thread')->insert([
-                'group_id' => rand(1, 99),
-                'thread_id' => rand(1, 99),
+                'group_id' => rand(1, 30),
+                'thread_id' => rand(1, 40),
             ]);
         }
 
         // PinnedThreads
         for ($i = 0; $i < 100; $i++) {
             DB::table('pinned_threads')->insert([
-                'user_id' => rand(1, 99),
-                'thread_id' => rand(1, 99),
+                'user_id' => rand(1, 20),
+                'thread_id' => rand(1, 40),
             ]);
         }
         
         // RevokedGroupOwners
         for ($i = 0; $i < 20; $i++) {
             DB::table('revoked_group_owners')->insert([
-                'user_id' => rand(1, 99),
-                'group_id' => rand(1, 99),
+                'user_id' => rand(1, 20),
+                'group_id' => rand(1, 30),
             ]);
         }
         

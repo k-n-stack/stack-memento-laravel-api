@@ -29,7 +29,7 @@ class AuthController extends Controller
 
         return response()->json([
             'status' => 'authenticated',
-            'token' => $token,
+            'token' => explode("|", $token)[1],
             'token_type' => 'Bearer',
             'email' => $user->email,
             'pseudonym' => $user->pseudonym,

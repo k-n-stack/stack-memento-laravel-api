@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ThreadController extends Controller
 {
@@ -59,5 +60,13 @@ class ThreadController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getAllOfAuth() {
+        return Auth::user()->threads;
+    }
+
+    public function countAllOfAuth() {
+        return count($this->getAllOfAuth());
     }
 }

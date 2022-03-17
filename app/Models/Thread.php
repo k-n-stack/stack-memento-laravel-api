@@ -15,7 +15,7 @@ class Thread extends Model
     use HasFactory;
 
     public function bookmarks() {
-        return $this->hasMany(Bookmark::class);
+        return $this->belongsToMany(Bookmark::class);
     }
 
     public function user() {
