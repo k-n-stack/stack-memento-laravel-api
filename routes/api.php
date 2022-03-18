@@ -74,7 +74,6 @@ Route::group([
     Route::get('/user-redirection-count', [RedirectionController::class, 'countAllOfAuth']);
     Route::get('/user-comment', [CommentController::class, 'allOfAuth']);
     Route::get('/user-comment-count', [CommentController::class, 'countAllOfAuth']);
-    Route::
 
 });
 
