@@ -20,6 +20,6 @@ class BookmarkController extends Controller
     }
 
     public function countAllOfAuth() {
-        return count($this->getAllOfAuth());
+        return count($this->allOfAuth());
     }
 }
