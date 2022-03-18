@@ -49,10 +49,11 @@ class DatabaseSeeder extends Seeder
             ->create();
 
         // Redirections
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             DB::table('redirections')->insert([
                 'user_id' => rand(1, 20),
                 'bookmark_id' => rand(1, 200),
+                'count' => rand(10, 50)
             ]);
         }
 

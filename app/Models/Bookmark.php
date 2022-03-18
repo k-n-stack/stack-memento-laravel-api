@@ -26,8 +26,8 @@ class Bookmark extends Model
         return $this->hasMany(Vote::class);
     }
 
-    public function redirections() {
-        return $this->hasMany(Redirection::class);
+    public function user() {
+        return $this->belongsToMany(User::class, 'redirections')->withPivot('count');
     }
 
 }

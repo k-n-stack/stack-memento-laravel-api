@@ -13,6 +13,7 @@ use App\Models\Friend;
 use App\Models\Comment;
 use App\Models\Group;
 use App\Models\Vote;
+use App\Models\Bookmark;
 
 class User extends Authenticatable
 {
@@ -57,7 +58,7 @@ class User extends Authenticatable
     }
 
     public function comments() {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class, 'poster_id');
     }
 
     public function subscribedGroups() {
@@ -69,6 +70,10 @@ class User extends Authenticatable
     }
 
     public function votes() {
-        return $this->hasMany(Vote::class);
+        return $this->belongsToMany(Vote::class);
+    }
+
+    public function redirections() {
+        return $this->belongsToMany(Bookmark::class, 'redirections')->withPivot('count');
     }
 }

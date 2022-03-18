@@ -68,7 +68,13 @@ Route::group([
     ]);
 
     Route::get('/user-thread-count', [ThreadController::class, 'countAllOfAuth']);
+    Route::get('/user-bookmark', [BookmarkController::class, 'allOfAuth']);
     Route::get('/user-bookmark-count', [BookmarkController::class, 'countAllOfAuth']);
+    Route::get('/user-redirection', [RedirectionController::class, 'allOfAuth']);
+    Route::get('/user-redirection-count', [RedirectionController::class, 'countAllOfAuth']);
+    Route::get('/user-comment', [CommentController::class, 'allOfAuth']);
+    Route::get('/user-comment-count', [CommentController::class, 'countAllOfAuth']);
+    Route::
 
 });
 
