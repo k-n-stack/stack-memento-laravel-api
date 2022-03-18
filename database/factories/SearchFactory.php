@@ -14,7 +14,7 @@ class SearchFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => $this->faker->numberBetween(1, 99),
+            'user_id' => $this->faker->numberBetween(1, 20),
             'search_string' => $this->faker->realText(30),
         ];
     }

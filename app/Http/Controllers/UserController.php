@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -16,6 +17,7 @@ class UserController extends Controller
         //
     }
 
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -37,7 +39,8 @@ class UserController extends Controller
     {
         //
     }
-
+    
+    
     /**
      * Update the specified resource in storage.
      *
@@ -49,7 +52,7 @@ class UserController extends Controller
     {
         //
     }
-
+    
     /**
      * Remove the specified resource from storage.
      *

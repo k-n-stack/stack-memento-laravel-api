@@ -42,6 +42,7 @@ Route::post('/test', function () {
     return ['post' => 'bar'];
 });
 
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -51,7 +52,8 @@ Route::group([
         'auth:sanctum',
     ],
 ], function () {
-
+    Route::get('/testauth', function () { return "hello"; });
+    
     Route::apiResources([
         'bookmarks' => BookmarkController::class,
         'comments' => CommentController::class,
@@ -64,6 +66,14 @@ Route::group([
         'users' => UserController::class,
         'votes' => VoteController::class,
     ]);
+
+    Route::get('/user-thread-count', [ThreadController::class, 'countAllOfAuth']);
+    Route::get('/user-bookmark', [BookmarkController::class, 'allOfAuth']);
+    Route::get('/user-bookmark-count', [BookmarkController::class, 'countAllOfAuth']);
+    Route::get('/user-redirection', [RedirectionController::class, 'allOfAuth']);
+    Route::get('/user-redirection-count', [RedirectionController::class, 'countAllOfAuth']);
+    Route::get('/user-comment', [CommentController::class, 'allOfAuth']);
+    Route::get('/user-comment-count', [CommentController::class, 'countAllOfAuth']);
 
 });
 

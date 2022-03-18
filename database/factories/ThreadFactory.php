@@ -16,7 +16,7 @@ class ThreadFactory extends Factory
         $visibilities = ['private', 'shareable', 'control', 'public'];
 
         return [
-            'user_id' => $this->faker->numberBetween(1, 99),
+            'user_id' => $this->faker->numberBetween(1, 20),
             'title' => $this->faker->jobTitle(),
             'visibility' => $visibilities[rand(0, 3)],
             'image_url' => '0123456.png',
