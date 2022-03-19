@@ -12,11 +12,11 @@ class Vote extends Model
 {
     use HasFactory;
 
-    public function user() {
-        return $this->belongsToMany(User::class);
-    }
+    // public function user() {
+    //     return $this->belongsToMany(User::class);
+    // }
 
-    public function bookmark() {
-        return $this->belongsTo(Bookmark::class);
-    }
+    // public function bookmark() {
+    //     return $this->belongsTo(Bookmark::class);
+    // }
 }

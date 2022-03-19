@@ -23,7 +23,7 @@ class Bookmark extends Model
     }
 
     public function votes() {
-        return $this->hasMany(Vote::class);
+        return $this->belongsToMany(User::class, 'votes');
     }
 
     public function user() {

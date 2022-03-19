@@ -54,19 +54,20 @@ Route::group([
 ], function () {
     Route::get('/testauth', function () { return "hello"; });
     
-    Route::apiResources([
-        'bookmarks' => BookmarkController::class,
-        'comments' => CommentController::class,
-        'friends' => FriendController::class,
-        'groups' => GroupController::class,
-        'redirections' => RedirectionController::class,
-        'searches' => SearchController::class,
-        'tags' => TagController::class,
-        'threads' => ThreadController::class,
-        'users' => UserController::class,
-        'votes' => VoteController::class,
-    ]);
+    // Route::apiResources([
+    //     'bookmarks' => BookmarkController::class,
+    //     'comments' => CommentController::class,
+    //     'friends' => FriendController::class,
+    //     'groups' => GroupController::class,
+    //     'redirections' => RedirectionController::class,
+    //     'searches' => SearchController::class,
+    //     'tags' => TagController::class,
+    //     'threads' => ThreadController::class,
+    //     'users' => UserController::class,
+    //     'votes' => VoteController::class,
+    // ]);
 
+    Route::get('/user-thread', [ThreadController::class, 'allOfAuth']);
     Route::get('/user-thread-count', [ThreadController::class, 'countAllOfAuth']);
     Route::get('/user-bookmark', [BookmarkController::class, 'allOfAuth']);
     Route::get('/user-bookmark-count', [BookmarkController::class, 'countAllOfAuth']);
@@ -74,6 +75,8 @@ Route::group([
     Route::get('/user-redirection-count', [RedirectionController::class, 'countAllOfAuth']);
     Route::get('/user-comment', [CommentController::class, 'allOfAuth']);
     Route::get('/user-comment-count', [CommentController::class, 'countAllOfAuth']);
+    Route::get('/user-vote-count', [VoteController::class, 'countAllOfAuth']);
+    Route::get('/user-vote', [VoteController::class, 'allOfAuth']);
 
 });
 
