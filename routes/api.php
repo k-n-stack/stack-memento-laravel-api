@@ -35,38 +35,11 @@ Route::get('/login', [
     }
 ]);
 
-Route::get('/test', function () {
-    return ['get' => 'foo'];
-});
-Route::post('/test', function () {
-    return ['post' => 'bar'];
-});
-
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::group([
     'middleware' => [
         'auth:sanctum',
     ],
 ], function () {
-    Route::get('/testauth', function () { return "hello"; });
-    
-    // Route::apiResources([
-    //     'bookmarks' => BookmarkController::class,
-    //     'comments' => CommentController::class,
-    //     'friends' => FriendController::class,
-    //     'groups' => GroupController::class,
-    //     'redirections' => RedirectionController::class,
-    //     'searches' => SearchController::class,
-    //     'tags' => TagController::class,
-    //     'threads' => ThreadController::class,
-    //     'users' => UserController::class,
-    //     'votes' => VoteController::class,
-    // ]);
-
     Route::get('/user-thread', [ThreadController::class, 'allOfAuth']);
     Route::get('/user-thread-count', [ThreadController::class, 'countAllOfAuth']);
     Route::get('/user-bookmark', [BookmarkController::class, 'allOfAuth']);
@@ -78,6 +51,7 @@ Route::group([
     Route::get('/user-vote-count', [VoteController::class, 'countAllOfAuth']);
     Route::get('/user-vote', [VoteController::class, 'allOfAuth']);
 
+    Route::get('/user-full-thread', [ThreadController::class, 'allFullOfAuth']);
 });
 
 Route::fallback(function () {

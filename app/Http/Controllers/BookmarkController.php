@@ -22,4 +22,8 @@ class BookmarkController extends Controller
     public function countAllOfAuth() {
         return count($this->allOfAuth());
     }
+
+    public function getAllByThreadId() {
+        
+    }
 }
