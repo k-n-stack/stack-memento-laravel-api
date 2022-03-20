@@ -8,22 +8,8 @@ use Illuminate\Support\Facades\Auth;
 class ThreadController extends Controller
 {
 
-    private static $allOfAuth = null; // <---- !!!! set to null on thread NUMBER update
-
-    public function allOfAuth() {
-        return self::$allOfAuth = Auth::user()->threads->map(function ($thread) {
-            return !empty($thread->deleted_at) ? null : [
-                "title" => $thread->title,
-                "color" => $thread->color,
-                "image_url" => $thread->image_url,
-                "visibility" => $thread->visibility,
-                "created_at" => $thread->created_at,
-            ];
-        });
-    }
-
     public function countAllOfAuth() {
-        return count(self::$allOfAuth === null ? $this->allOfAuth() : self::$allOfAuth);
+        return Auth::user()->threads->count();
     }
 
     public function allFullOfAuth() {
@@ -39,6 +25,14 @@ class ThreadController extends Controller
                         "description" => $bookmark->description,
                         "url" => $bookmark->url,
                         "created_at" => $bookmark->created_at,
+                        "redirection_count" => array_sum($bookmark->users->map(function ($redirection) {
+                            return $redirection->pivot->count;
+                        })->toArray()),
+                        "vote_count" => $bookmark->votes->count(),
+                        "comment_count" => $bookmark->comments->count(),
+                        "tags" => $bookmark->tags->map(function ($tag) {
+                            return $tag->name;
+                        }),
                         "comments" => $bookmark->comments->map(function ($comment) {
                             return $comment->getNestedChilds();
                         })

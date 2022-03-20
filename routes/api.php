@@ -40,7 +40,7 @@ Route::group([
         'auth:sanctum',
     ],
 ], function () {
-    Route::get('/user-thread', [ThreadController::class, 'allOfAuth']);
+    Route::get('/user-thread-full', [ThreadController::class, 'allFullOfAuth']);
     Route::get('/user-thread-count', [ThreadController::class, 'countAllOfAuth']);
     Route::get('/user-bookmark', [BookmarkController::class, 'allOfAuth']);
     Route::get('/user-bookmark-count', [BookmarkController::class, 'countAllOfAuth']);
@@ -51,7 +51,6 @@ Route::group([
     Route::get('/user-vote-count', [VoteController::class, 'countAllOfAuth']);
     Route::get('/user-vote', [VoteController::class, 'allOfAuth']);
 
-    Route::get('/user-full-thread', [ThreadController::class, 'allFullOfAuth']);
 });
 
 Route::fallback(function () {

@@ -31,7 +31,6 @@ class Comment extends Model
     // !!!! RECURSIVE
     public function getNestedChilds() {
         return !empty($this->deleted_at) ? null : [
-            "id" => $this->id,
             "posted_at" => $this->validated_at,
             "poster_name" => $this->user->pseudonym,
             "poster_image_url" => $this->user->image_url,
