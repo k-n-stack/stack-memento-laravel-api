@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use App\Models\User;
+
 class ThreadController extends Controller
 {
 
@@ -12,9 +14,10 @@ class ThreadController extends Controller
         return Auth::user()->threads->count();
     }
 
-    public function allFullOfAuth() {
-        return Auth::user()->threads->map(function ($thread) {
+    private function allFullByUser($user) {
+        return $user->threads->map(function ($thread) {
             return !empty($thread->deleted_at) ? null : [
+                "id" => $thread->id,
                 "title" => $thread->title,
                 "color" => $thread->color,
                 "image_url" => $thread->image_url,
@@ -40,6 +43,18 @@ class ThreadController extends Controller
                 })
             ];
         });
+    }
+
+    public function allFullOfAuth() {
+        return $this->allFullByUser(Auth::user());
+    }
+
+    public function allFullOfGlobal() {
+        $global = User::where('email', 'global@stackmemento.com')->first();
+
+        return array_values(array_filter($this->allFullByUser($global)->map(function ($thread) {
+            return count($thread["bookmarks"]) === 0 ? null : $thread;
+        })->toArray()));
     }
 
 }

@@ -51,6 +51,8 @@ Route::group([
     Route::get('/user-vote-count', [VoteController::class, 'countAllOfAuth']);
     Route::get('/user-vote', [VoteController::class, 'allOfAuth']);
 
+    Route::get('/global-thread-full', [ThreadController::class, 'allFullOfGlobal']);
+
 });
 
 Route::fallback(function () {
