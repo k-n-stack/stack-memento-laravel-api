@@ -9,6 +9,7 @@ use App\Models\Thread;
 use App\Models\Comment;
 use App\Models\Vote;
 use App\Models\Redirection;
+use App\Models\Tag;
 
 class Bookmark extends Model
 {
@@ -23,11 +24,15 @@ class Bookmark extends Model
     }
 
     public function votes() {
-        return $this->hasMany(Vote::class);
+        return $this->belongsToMany(User::class, 'votes');
     }
 
-    public function user() {
+    public function users() {
         return $this->belongsToMany(User::class, 'redirections')->withPivot('count');
+    }
+
+    public function tags() {
+        return $this->belongsToMany(Tag::class);
     }
 
 }

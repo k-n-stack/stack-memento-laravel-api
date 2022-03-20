@@ -12,6 +12,6 @@ class VoteController extends Controller
     }
 
     public function countAllOfAuth() {
-        return count($this->allOfAuth());
+        return Auth::user()->votes->count();
     }
 }

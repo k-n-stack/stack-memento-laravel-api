@@ -70,7 +70,7 @@ class User extends Authenticatable
     }
 
     public function votes() {
-        return $this->belongsToMany(Vote::class);
+        return $this->belongsToMany(Bookmark::class, 'votes');
     }
 
     public function redirections() {
