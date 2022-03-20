@@ -2,6 +2,9 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use App\Models\Bookmark;
@@ -23,7 +26,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        #### GLOBAL SEEDS ####
+        User::create([
+            'pseudonym' => 'Global',
+            'email' => 'global@stackmemento.com',
+            'password' => Hash::make('password'),
+            'email_verified_at' => now(),
+            'image_url' => '654321.png',
+            'remember_token' => Str::random(10),
+            'deleted_at' => null,
+        ]);
 
+        Thread::factory()->count(20)->forGlobal()->create();
+
+        #### RANDOM USERS SEEDS ####
         User::factory()
             ->count(20)
             ->create();
@@ -52,7 +68,7 @@ class DatabaseSeeder extends Seeder
         for ($i = 0; $i < 50; $i++) {
             DB::table('redirections')->insert([
                 'user_id' => rand(1, 20),
-                'bookmark_id' => rand(1, 200),
+                'bookmark_id' => $i + 1,
                 'count' => rand(10, 50)
             ]);
         }

@@ -23,4 +23,13 @@ class ThreadFactory extends Factory
             'color' => sprintf('%06d', rand(0, 999999)),
         ];
     }
+
+    public function forGlobal()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'user_id' => '1',
+            ];
+        });
+    }
 }
