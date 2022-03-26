@@ -25,7 +25,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'pseudonym',
         'email',
         'password',
     ];
@@ -75,5 +75,9 @@ class User extends Authenticatable
 
     public function redirections() {
         return $this->belongsToMany(Bookmark::class, 'redirections')->withPivot('count');
+    }
+
+    public function pinnedThreads() {
+        return $this->belongsToMany(Thread::class, 'pinned_threads');
     }
 }
