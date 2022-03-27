@@ -36,6 +36,8 @@ Route::get('/login', [
     }
 ]);
 
+Route::get('/test', [App\Http\Controllers\AuthController::class, 'mail']);
+
 Route::group([
     'middleware' => [
         'auth:sanctum',

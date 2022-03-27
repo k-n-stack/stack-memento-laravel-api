@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
 use App\Models\User;
+use App\Mail\Service;
 
 class AuthController extends Controller
 {
@@ -77,5 +79,15 @@ class AuthController extends Controller
         auth()->user()->tokens()->delete();
 
         return ['status' => 'logout'];
+    }
+
+    public function mail () {
+
+        $data['title'] = "This is Test Mail Tuts Make";
+
+        Mail::to('khin.nicolas@gmail.com')
+            ->send(new Service());
+
+        return ['end of mail controller method'];
     }
 }
