@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [App\Http\Controllers\AuthController::class, 'login']);
 Route::post('/register', [App\Http\Controllers\AuthController::class, 'register']);
+Route::get('/email-verify/{id}/{hash}', [App\Http\Controllers\AuthController::class, 'verifyEmail'])->name('verification.verify');
 
 Route::get('/login', [
     'as' => 'login',
@@ -41,6 +42,7 @@ Route::get('/test', [App\Http\Controllers\AuthController::class, 'mail']);
 Route::group([
     'middleware' => [
         'auth:sanctum',
+        'verified'
     ],
 ], function () {
     Route::get('/user-thread-full', [ThreadController::class, 'allFullOfAuth']);

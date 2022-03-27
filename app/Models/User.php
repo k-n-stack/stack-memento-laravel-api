@@ -15,7 +15,7 @@ use App\Models\Group;
 use App\Models\Vote;
 use App\Models\Bookmark;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 

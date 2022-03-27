@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -30,17 +33,26 @@ class AuthController extends Controller
             'password' => Hash::make($request->password)
         ]);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $user->sendEmailVerificationNotification();
 
-        return response()->json([
-            'user' => $user,
-            'token' => $token,
-            'token_type' => 'Bearer',
-        ]);
+        return response()->json(['status' => 'Registration success']);
+    }
+
+    public function verifyEmail (Request $request) {
+        if (!$request->hasValidSignature()) {
+            return response()->json(['status' => 'Invalid/Expired url provided']);
+        }
+
+        $user = User::findOrFail($request->id);
+
+        if (!$user->hasVerifiedEmail()) {
+            $user->markEmailAsVerified();
+        }
+    
+        return response()->json(["status" => "Verification success"]);
     }
 
     public function login (Request $request) {
-
         $errorResponse = [
             'status' => 'unauthenticated',
             'token' => '',
@@ -54,13 +66,26 @@ class AuthController extends Controller
         $adminEmails = [
             'global@stackmemento.com',
         ];
-
                                                                 /* vvv AVOID ADMIN EMAIL TO CONNECT vvv */
         if (!Auth::attempt($request->only('email', 'password')) /*|| in_array($request->email, $adminEmails)*/) {
             return $errorResponse;
         }
 
         $user = User::where('email', $request['email'])->firstOrFail();
+
+        if (!$user->hasVerifiedEmail()) {
+            $executed = RateLimiter::attempt(
+                `resend_verification_email_{$user->id}`,
+                $perMinute = 5,
+                function () use ($user) {
+                    $user->sendEmailVerificationNotification();
+                }
+            );
+            if (!$executed) {
+                return response()->json(['status' => 'Too many verification mail required']);
+            }
+            return response()->json(['status' => 'Verification required']);
+        }
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
@@ -81,13 +106,12 @@ class AuthController extends Controller
         return ['status' => 'logout'];
     }
 
-    public function mail () {
+    // public function mail () {
+    //     $data['title'] = "This is Test Mail Tuts Make";
 
-        $data['title'] = "This is Test Mail Tuts Make";
+    //     Mail::to('khin.nicolas@gmail.com')
+    //         ->send(new Service());
 
-        Mail::to('khin.nicolas@gmail.com')
-            ->send(new Service());
-
-        return ['end of mail controller method'];
-    }
+    //     return ['end of mail controller method'];
+    // }
 }
