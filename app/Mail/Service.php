@@ -11,14 +11,20 @@ class Service extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $url;
+    public $user;
+    public $email;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($url, $user, $email)
     {
-        //
+        $this->url = $url;
+        $this->user = $user;
+        $this->email = $email;
     }
 
     /**
@@ -28,6 +34,13 @@ class Service extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.subscription');
+        $from = 'service@stackmemento.com';
+        $name = 'Stackmemento\'s dev';
+        $subject = 'Stackmemento - sign up validation';
+        return $this
+                ->to($this->email)
+                ->subject($subject)
+                ->from($from, $name)
+                ->view('emails.subscription');
     }
 }

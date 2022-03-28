@@ -125,7 +125,7 @@
                           <tbody>
                             <tr>
                               <td style="width:150px;">
-                                <img height="auto" src="./stmn-logo.png" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:14px;" width="150" />
+                                <img height="auto" src="http://localhost:8000/images/stmn-logo.png" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:14px;" width="150" />
                               </td>
                             </tr>
                           </tbody>
@@ -153,7 +153,7 @@
                   <tbody>
                     <tr>
                       <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                        <div style="font-family:Roboto;font-size:14px;font-weight:bold;line-height:1;text-align:left;color:#000000;">hello mama,</div>
+                        <div style="font-family:Roboto;font-size:14px;font-weight:bold;line-height:1;text-align:left;color:#000000;">Hello {{$user}}</div>
                       </td>
                     </tr>
                     <tr>
@@ -168,7 +168,7 @@
                     </tr>
                     <tr>
                       <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                        <div style="font-family:Roboto;font-size:14px;line-height:1;text-align:left;color:#000000;">To confirm your registration, please click on the folowing button&nbsp:</div>
+                        <div style="font-family:Roboto;font-size:14px;line-height:1;text-align:left;color:#000000;">To confirm your registration, please click on the folowing button&nbsp;:</div>
                       </td>
                     </tr>
                     <tr>
@@ -182,7 +182,7 @@
                           <tbody>
                             <tr>
                               <td align="center" bgcolor="#3650AB" role="presentation" style="border:none;border-radius:3px;cursor:auto;mso-padding-alt:10px 25px;background:#3650AB;" valign="middle">
-                                <a href="https://google.com/" style="display:inline-block;background:#3650AB;color:white;font-family:Roboto;font-size:14px;font-weight:normal;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px;mso-padding-alt:0px;border-radius:3px;" target="_blank"> Validate registration </a>
+                                <a href={{$url}} style="display:inline-block;background:#3650AB;color:white;font-family:Roboto;font-size:14px;font-weight:normal;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px;mso-padding-alt:0px;border-radius:3px;" target="_blank"> Validate registration </a>
                               </td>
                             </tr>
                           </tbody>
