@@ -22,7 +22,7 @@ class ThreadController extends Controller
                 "color" => $thread->color,
                 "image_url" => $thread->image_url,
                 "visibility" => $thread->visibility,
-                "created_at" => $thread->created_at,
+                "created_at" => $thread->created_at->format('Y-m-d H:i:s'),
                 "bookmarks" => $thread->bookmarks->map(function ($bookmark) {
                     return !empty($bookmark->deleted_at) ? null : [
                         "description" => $bookmark->description,
@@ -55,6 +55,10 @@ class ThreadController extends Controller
         return array_values(array_filter($this->allFullByUser($global)->map(function ($thread) {
             return count($thread["bookmarks"]) === 0 ? null : $thread;
         })->toArray()));
+    }
+
+    public function pinnedOfAuth() {
+        return Auth::user()->pinnedThreads;
     }
 
 }

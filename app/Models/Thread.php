@@ -29,4 +29,8 @@ class Thread extends Model
     public function groups() {
         return $this->belongsToMany(Group::class);
     }
+
+    public function pinnedThreads() {
+        return $this->belongsToMany(User::class, 'pinned_threads');
+    }
 }

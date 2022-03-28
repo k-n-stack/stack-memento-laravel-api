@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('pseudonym');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('image_url', 64);
+            $table->string('image_url', 64)->default('default.png');
             $table->timestamp('email_verified_at')->nullable();
             $table->boolean('is_admin')->default(false);
             $table->rememberToken();
