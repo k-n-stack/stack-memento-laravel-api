@@ -37,7 +37,11 @@ Route::get('/login', [
     }
 ]);
 
-Route::get('/test', [App\Http\Controllers\AuthController::class, 'mail']);
+Route::get('/not-verified', function () {
+    return ['status' => 'not verified'];
+})->name('verification.notice');
+
+Route::get('/test', function () {return redirect('http://localhost:3000');});
 
 Route::group([
     'middleware' => [
