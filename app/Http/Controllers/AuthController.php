@@ -40,7 +40,7 @@ class AuthController extends Controller
 
     public function verifyEmail (Request $request) {
         if (!$request->hasValidSignature()) {
-            return response()->json(['status' => 'Invalid/Expired url provided']);
+            return redirect('http://localhost:3000/?status=fail');
         }
 
         $user = User::findOrFail($request->id);
@@ -49,7 +49,7 @@ class AuthController extends Controller
             $user->markEmailAsVerified();
         }
     
-        return response()->json(["status" => "Verification success"]);
+        return redirect('http://localhost:3000/?status=success');
     }
 
     public function login (Request $request) {
