@@ -15,6 +15,11 @@ class Bookmark extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'description',
+        'url',
+    ];
+
     public function threads() {
         return $this->belongsToMany(Thread::class);
     }
