@@ -14,9 +14,19 @@ class GroupFactory extends Factory
     public function definition()
     {
         return [
+            'alphanumeric_id' => $this->generateANID(8),
             'owner_id' => $this->faker->numberBetween(1, 20),
             'name' => $this->faker->catchPhrase(),
             'image_url' => '0123456.png',
         ];
+    }
+
+    public function generateANID($length) {
+        $alphaNumerics = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        $random = "";
+        for ($i = 0; $i < $length; $i++) {
+            $random .= $alphaNumerics[rand(0, strlen($alphaNumerics) - 1)];
+        }
+        return $random;
     }
 }

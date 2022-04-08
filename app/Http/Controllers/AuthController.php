@@ -28,6 +28,7 @@ class AuthController extends Controller
         }
 
         $user = User::create([
+            'alphanumeric_id' => $this->generateANID(8),
             'email' => $request->email,
             'pseudonym' => $request->pseudonym,
             'password' => Hash::make($request->password)
@@ -106,12 +107,12 @@ class AuthController extends Controller
         return ['status' => 'logout'];
     }
 
-    // public function mail () {
-    //     $data['title'] = "This is Test Mail Tuts Make";
-
-    //     Mail::to('khin.nicolas@gmail.com')
-    //         ->send(new Service());
-
-    //     return ['end of mail controller method'];
-    // }
+    function generateANID($length) {
+        $alphaNumerics = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        $random = "";
+        for ($i = 0; $i < $length; $i++) {
+            $random .= $alphaNumerics[rand(0, strlen($alphaNumerics) - 1)];
+        }
+        return $random;
+    }
 }

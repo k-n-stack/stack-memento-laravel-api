@@ -15,6 +15,7 @@ class CreateThreadsTable extends Migration
     {
         Schema::create('threads', function (Blueprint $table) {
             $table->id();
+            $table->string('alphanumeric_id', 8)->unique();
             $table->unsignedBigInteger('user_id');
             $table->string('title', 128); // to revert to 32
             $table->enum('visibility', ['private', 'shareable', 'control', 'public']);
