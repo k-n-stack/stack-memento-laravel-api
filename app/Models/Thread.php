@@ -14,6 +14,15 @@ class Thread extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'alphanumeric_id',
+        'user_id',
+        'title',
+        'visibility',
+        'image_url',
+        'color',
+    ];
+
     public function bookmarks() {
         return $this->belongsToMany(Bookmark::class);
     }

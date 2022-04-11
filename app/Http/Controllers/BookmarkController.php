@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Bookmark;
 use App\Models\Comment;
 use App\Models\Thread;
+use App\Models\Tag;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -65,7 +67,6 @@ class BookmarkController extends Controller
         $validator = Validator::make($request->all(), [
             'description' => ['required', 'string', 'max: 128'],
             'url' => ['required', 'url', 'string', 'max: 512'],
-            'comment' => ['string', 'max: 2048'],
         ]);
 
         if ($validator->fails()) {
@@ -79,6 +80,33 @@ class BookmarkController extends Controller
         
         foreach ($request->thread_ids as $thread_id) {
             $bookmark->threads()->attach($thread_id);
+        }
+
+        if (!empty($request->tags)) {
+
+            $_tags = [];
+
+            foreach ($request->tags as $tag) {
+                $_tags[] = Tag::firstOrCreate([
+                    'name' => $tag,
+                ]);
+            }
+
+            $_tags = array_map(function ($tag) {
+                return $tag->id;
+            }, $_tags);
+    
+            foreach ($_tags as $tag_id) {
+                $bookmark->tags()->attach($tag_id);
+            }
+        }
+
+        if (!empty($request->comment)) {
+            $comment = Comment::create([
+                'poster_id' => Auth::user()->id,
+                'bookmark_id' => $bookmark->id,
+                'body' => $request->comment,
+            ]);
         }
 
         return response()->json(['status' => 'bookmark added']);

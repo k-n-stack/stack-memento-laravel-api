@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
+use App\Models\Thread;
 use App\Models\User;
 
 class ThreadController extends Controller
@@ -59,6 +61,38 @@ class ThreadController extends Controller
 
     public function pinnedOfAuth() {
         return Auth::user()->pinnedThreads;
+    }
+
+    public function postThread (Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'title' => ['required', 'string', 'max: 128'],
+            'visibility' => ['required', 'string'],
+            'color' => ['required', 'string', 'max: 6'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+
+        $thread = Thread::create([
+            'alphanumeric_id' => $this->generateANID(8),
+            'user_id' => Auth::user()->id,
+            'visibility' => $request->visibility,
+            'image_url' => '0123456.png',
+            'color' => $request->color,
+        ]);
+
+        return response()->json(['status' => 'thread added']);
+    }
+
+    public function generateANID($length) {
+        $alphaNumerics = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        $random = "";
+        for ($i = 0; $i < $length; $i++) {
+            $random .= $alphaNumerics[rand(0, strlen($alphaNumerics) - 1)];
+        }
+        return $random;
     }
 
 }

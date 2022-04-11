@@ -11,6 +11,10 @@ class Tag extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+    ];
+
     public function bookmarks() {
         return $this->belongsToMany(Bookmark::class);
     }

@@ -12,6 +12,12 @@ class Comment extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'bookmark_id',
+        'poster_id',
+        'body',
+    ];
+
     public function parent() {
         return $this->belongsTo(Comment::class, 'parent_id');
     }

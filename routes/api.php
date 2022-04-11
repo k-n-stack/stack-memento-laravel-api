@@ -70,6 +70,7 @@ Route::group([
     Route::get('/global-thread-full', [ThreadController::class, 'allFullOfGlobal']);
     
     Route::post('/post-bookmark', [BookmarkController::class, 'postBookmark']);
+    Route::post('/post-thread', [ThreadController::class, 'postThread']);
     Route::post('/post-avatar', [UserController::class, 'postAvatar']);
 
     
