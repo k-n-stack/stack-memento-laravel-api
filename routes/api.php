@@ -8,6 +8,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FriendController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\RedirectionController;
+use App\Http\Controllers\RessourceController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\ThreadController;
@@ -42,11 +43,12 @@ Route::get('/not-verified', function () {
     return ['status' => 'not verified'];
 })->name('verification.notice');
 
+Route::get('/ressource-avatar/{image}', [RessourceController::class, 'getAvatar']);
 
 Route::group([
     'middleware' => [
         'auth:sanctum',
-        'verified'
+        'verified',
     ],
 ], function () {
     Route::get('/user-thread-full', [ThreadController::class, 'allFullOfAuth']);
@@ -61,11 +63,16 @@ Route::group([
     Route::get('/user-vote', [VoteController::class, 'allOfAuth']);
     Route::get('/user-pinned', [ThreadController::class, 'pinnedOfAuth']);
     Route::get('/user-image', [UserController::class, 'getUserImage']);
+    Route::get('/user-subscribed-group', [GroupController::class, 'getSubscribedGroups']);
+    Route::get('/user-own-group', [GroupController::class, 'getOwnedGroups']);
+    Route::get('/user-fellows', [FriendController::class, 'getFellows']);
     
     Route::get('/global-thread-full', [ThreadController::class, 'allFullOfGlobal']);
     
     Route::post('/post-bookmark', [BookmarkController::class, 'postBookmark']);
     Route::post('/post-avatar', [UserController::class, 'postAvatar']);
+
+    
 });
 
 Route::fallback(function () {
