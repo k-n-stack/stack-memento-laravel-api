@@ -45,6 +45,8 @@ Route::get('/not-verified', function () {
 
 Route::get('/ressource-avatar/{image}', [RessourceController::class, 'getAvatar']);
 
+Route::get('/test', [RessourceController::class, 'test']);
+
 Route::group([
     'middleware' => [
         'auth:sanctum',

@@ -31,7 +31,7 @@ class AuthController extends Controller
             'alphanumeric_id' => $this->generateANID(8),
             'email' => $request->email,
             'pseudonym' => $request->pseudonym,
-            'password' => Hash::make($request->password)
+            'password' => Hash::make($request->password),
         ]);
 
         $user->sendEmailVerificationNotification();

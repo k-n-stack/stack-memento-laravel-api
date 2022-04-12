@@ -11,4 +11,8 @@ class RessourceController extends Controller
         $avatar = Storage::get("avatars/$image.png");
         return response()->make($avatar, 200, ['content-type' => 'image/png']);
     }
+
+    public function test() {
+        return Storage::disk('local')->files("avatars");
+    }
 }

@@ -20,6 +20,7 @@ class ThreadController extends Controller
         return $user->threads->map(function ($thread) {
             return !empty($thread->deleted_at) ? null : [
                 "id" => $thread->id,
+                "alphanumeric_id" => $thread->alphanumeric_id,
                 "title" => $thread->title,
                 "color" => $thread->color,
                 "image_url" => $thread->image_url,
@@ -78,6 +79,7 @@ class ThreadController extends Controller
         $thread = Thread::create([
             'alphanumeric_id' => $this->generateANID(8),
             'user_id' => Auth::user()->id,
+            'title' => $request->title,
             'visibility' => $request->visibility,
             'image_url' => '0123456.png',
             'color' => $request->color,

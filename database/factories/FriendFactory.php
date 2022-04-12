@@ -14,7 +14,7 @@ class FriendFactory extends Factory
     public function definition()
     {
         return [
-            'friend_id' => 1,
+            'friend_id' => $this->faker->numberBetween(1, 20),
             'user_id' => $this->faker->numberBetween(1, 20),
             'validated_at' => $this->faker->date(),
         ];
