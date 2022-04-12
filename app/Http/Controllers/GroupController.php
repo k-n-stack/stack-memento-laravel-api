@@ -12,12 +12,18 @@ class GroupController extends Controller
         return [
           "alphanumeric_id" => $group->alphanumeric_id,
           "name" => $group->name,
-          "image_url" => "groups/$group->image_url",
+          "image_url" => "ressource/groups/$group->alphanumeric_id",
         ];
       });
     }
 
     public function getOwnedGroups() {
-      return Auth::user()->ownGroups;
+      return Auth::user()->ownGroups->map(function ($group) {
+        return [
+          "alphanumeric_id" => $group->alphanumeric_id,
+          "name" => $group->name,
+          "image_url" => "ressource/groups/$group->alphanumeric_id",
+        ];
+      });
     }
 }

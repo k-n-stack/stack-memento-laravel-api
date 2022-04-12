@@ -43,7 +43,8 @@ Route::get('/not-verified', function () {
     return ['status' => 'not verified'];
 })->name('verification.notice');
 
-Route::get('/ressource-avatar/{image}', [RessourceController::class, 'getAvatar']);
+Route::get('/ressource/{type}/{anid}', [RessourceController::class, 'getAvatar']);
+// Route::get('/ressource-thread/{anid}', [RessourceController::class, 'getAvatar']);
 
 Route::get('/test', [RessourceController::class, 'test']);
 
