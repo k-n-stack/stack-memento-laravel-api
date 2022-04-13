@@ -18,7 +18,9 @@ class ThreadController extends Controller
 
     private function allFullByUser($user) {
         return $user->threads->map(function ($thread) {
-            return !empty($thread->deleted_at) ? null : [
+            return 
+            !empty($thread->deleted_at) ? null :
+            [
                 "id" => $thread->id,
                 "alphanumeric_id" => $thread->alphanumeric_id,
                 "title" => $thread->title,
@@ -51,6 +53,18 @@ class ThreadController extends Controller
     public function allFullOfAuth() {
         return $this->allFullByUser(Auth::user());
     }
+
+    // public function getFellowsThreads() {
+    //     return Auth::user()->friends->map(function ($friend) {
+    //         $fellow = User::find($friend->friend_id);
+    //         return empty($friend->validated_at) ? null : [
+    //             'fellow_anid' => $fellow->alphanumeric_id,
+    //             'threads' => $fellow->threads->map(function ($thread) {
+    //                 return $thread->visibility === "private" ? null : $thread;
+    //             }),
+    //         ];
+    //     });
+    // }
 
     public function allFullOfGlobal() {
         $global = User::where('email', 'global@stackmemento.com')->first();
