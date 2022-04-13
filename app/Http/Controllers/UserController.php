@@ -3,14 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class UserController extends Controller
 {
-    public function getUserImage () {
-      // Auth::user()
-    }
-
     public function postAvatar(Request $request)
     {
         $extension = ".".$request->avatar->extension();
@@ -19,7 +17,9 @@ class UserController extends Controller
         return $path;
     }
 
-    public function test2(Request $request) {
-      
+    public function test () {
+
+      $collection = collect(User::where('id', 1)->first()->getBookmarks());
+      return $collection->max('id');
     }
 }

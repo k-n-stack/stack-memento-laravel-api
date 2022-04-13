@@ -81,4 +81,27 @@ class User extends Authenticatable implements MustVerifyEmail
     public function pinnedThreads() {
         return $this->belongsToMany(Thread::class, 'pinned_threads');
     }
+
+    public function countThreads () {
+        return count($this->threads);
+    }
+
+    public function countBookmarks () {
+        return count($this->getBookmarks());
+    }
+
+    public function getBookmarks () {
+        $bookmarks = [];
+        $threads = $this->threads;
+        foreach ($threads as $thread) {
+            foreach ($thread->bookmarks as $bookmark) {
+                array_push($bookmarks, $bookmark);
+            }
+        }
+        return $bookmarks;
+    }
+
+    public function getLastBookmark () {
+        $this->getBookmarks->last();
+    }
 }

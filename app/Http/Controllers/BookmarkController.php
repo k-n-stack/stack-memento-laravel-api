@@ -6,6 +6,7 @@ use App\Models\Bookmark;
 use App\Models\Comment;
 use App\Models\Thread;
 use App\Models\Tag;
+use App\Models\User;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,22 +15,11 @@ use Illuminate\Support\Facades\Validator;
 class BookmarkController extends Controller
 {
     public function allOfAuth () {
-        $bookmarks = [];
-        $threads = Auth::user()->threads;
-        foreach ($threads as $thread) {
-            foreach ($thread->bookmarks as $bookmark) {
-                array_push($bookmarks, $bookmark);
-            }
-        }
-        return $bookmarks;
+        return Auth::user()->getBookmarks();
     }
 
     public function countAllOfAuth () {
         return count($this->allOfAuth());
-    }
-
-    public function getAllByThreadId () {
-        
     }
 
     public function postBookmark (Request $request) {
