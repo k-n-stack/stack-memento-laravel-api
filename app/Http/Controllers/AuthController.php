@@ -55,6 +55,7 @@ class AuthController extends Controller
 
     public function login (Request $request) {
         $errorResponse = [
+            'alphanumeric_id',
             'status' => 'unauthenticated',
             'token' => '',
             'token_type' => '',
@@ -91,6 +92,7 @@ class AuthController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
+            'alphanumeric_id' => $user->alphanumeric_id,
             'status' => 'authenticated',
             'token' => explode("|", $token)[1],
             'token_type' => 'Bearer',

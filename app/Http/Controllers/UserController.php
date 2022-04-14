@@ -20,6 +20,17 @@ class UserController extends Controller
     public function test () {
       $user = User::where('id', 1)->first();
 
-      return $user->threads;
+      return $user->subscribedGroups
+        ->map(function ($group) {
+        return [
+          "alphanumeric_id" => $group->alphanumeric_id,
+          "name" => $group->name,
+          "image_url" => "ressource/groups/$group->alphanumeric_id",
+          "owner" => $group->owner,
+          "subscribers" => $group->subscribers,
+        ];
+      });
+
+      // return $user->threads;
     }
 }
