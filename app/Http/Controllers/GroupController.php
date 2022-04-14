@@ -13,6 +13,8 @@ class GroupController extends Controller
           "alphanumeric_id" => $group->alphanumeric_id,
           "name" => $group->name,
           "image_url" => "ressource/groups/$group->alphanumeric_id",
+          "owner" => $group->owner,
+          "subscribers" => $group->subscribers,
         ];
       });
     }
@@ -23,6 +25,8 @@ class GroupController extends Controller
           "alphanumeric_id" => $group->alphanumeric_id,
           "name" => $group->name,
           "image_url" => "ressource/groups/$group->alphanumeric_id",
+          "owner" => $group->owner,
+          "subscribers" => $group->subscribers,
         ];
       });
     }

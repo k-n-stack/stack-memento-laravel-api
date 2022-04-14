@@ -19,11 +19,15 @@ class FriendController extends Controller
           "friend_since" => date('Y-m-d', strtotime($friend->validated_at)),
           "total_bookmarks" => $user->countBookmarks(),
           "total_threads" => $user->countThreads(),
+          "total_redirection" => $user->countRedirections(),
+          "total_comments" => $user->countComments(),
+          "total_votes" => $user->countVotes(),
           "threads" => $user->threads->map(function ($thread) {
             return $thread->visibility === 'private' ? null : $thread->getThreadDetails();
           }),
-          "register_date" => date('Y-m-d', strtotime($user->email_verified_at)),
-          "last_bookmark" => $user->threads->last()->create
+          "register_date" => date('Y-m-d H:i:s', strtotime($user->email_verified_at)),
+          "last_comment" => $user->getLastCommentDate(),
+          "last_bookmark" => $user->getLastBookmarkDate(),
         ];
       });
     }

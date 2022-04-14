@@ -90,6 +90,10 @@ class User extends Authenticatable implements MustVerifyEmail
         return count($this->getBookmarks());
     }
 
+    public function countVotes () {
+        return count($this->votes);
+    }
+
     public function getBookmarks () {
         $bookmarks = [];
         $threads = $this->threads;
@@ -101,7 +105,45 @@ class User extends Authenticatable implements MustVerifyEmail
         return $bookmarks;
     }
 
-    public function getLastBookmark () {
-        $this->getBookmarks->last();
+    public function getLastBookmarkDate () {
+        $collection = collect($this->getBookmarks());
+        $last = $collection->where('id', $collection->max('id'))->first();
+
+        if (empty($last)) {
+            return "";
+        }
+
+        $date = $last->created_at;
+        return date("Y-m-d H:i:s", strtotime($date));
     }
+
+    public function getLastCommentDate () {
+        $comment = $this->comments->last();
+
+        if (empty($comment)) {
+            return "";
+        }
+
+        $date = $comment->created_at;
+        return date('Y-m-d H:i:s', strtotime($date));
+    }
+
+    public function countRedirections () {
+        $redirections = $this->redirections;
+        if (empty($redirections)) {
+            return 0;
+        }
+
+        $count = 0;
+        foreach ($redirections as $redirection) {
+            $count += $redirection->pivot->count;
+        }
+
+        return $count;
+    }
+
+    public function countComments () {
+        return count($this->comments);
+    }
+
 }

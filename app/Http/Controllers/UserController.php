@@ -18,8 +18,8 @@ class UserController extends Controller
     }
 
     public function test () {
+      $user = User::where('id', 1)->first();
 
-      $collection = collect(User::where('id', 1)->first()->getBookmarks());
-      return $collection->max('id');
+      return $user->threads;
     }
 }

@@ -46,6 +46,7 @@ Route::get('/not-verified', function () {
 Route::get('/ressource/{type}/{anid}', [RessourceController::class, 'getAvatar']);
 // Route::get('/ressource-thread/{anid}', [RessourceController::class, 'getAvatar']);
 
+########################################################
 Route::get('/test', [UserController::class, 'test']);
 
 Route::group([
