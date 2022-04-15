@@ -15,7 +15,12 @@ class GroupController extends Controller
           "name" => $group->name,
           "image_url" => "ressource/groups/$group->alphanumeric_id",
           "owner" => $owner,
-          "subscribers" => $group->subscribers,
+          "subscribers" => $group->subscribers->map(function ($subscriber) {
+            return [
+              'alphanumeric_id' => $subscriber->alphanumeric_id,
+              'image_url' => "ressource/avatars/$subscriber->alphanumeric_id",
+            ];
+          }),
           "threads" => $group->threads,
         ];
       });
@@ -28,9 +33,31 @@ class GroupController extends Controller
           "name" => $group->name,
           "image_url" => "ressource/groups/$group->alphanumeric_id",
           "owner" => $group->owner,
-          "subscribers" => $group->subscribers,
+          "subscribers" => $group->subscribers->map(function ($subscriber) {
+            return [
+              'alphanumeric_id' => $subscriber->alphanumeric_id,
+              'image_url' => "ressource/avatars/$subscriber->alphanumeric_id",
+            ];
+          }),
           "threads" => $group->threads,
         ];
       });
     }
+
+
+
+
+
+    // public function getOwnedGroups() {
+    //   return Auth::user()->ownGroups->map(function ($group) {
+    //     return [
+    //       "alphanumeric_id" => $group->alphanumeric_id,
+    //       "name" => $group->name,
+    //       "image_url" => "ressource/groups/$group->alphanumeric_id",
+    //       "owner" => $group->owner,
+    //       "subscribers" => $group->subscribers,
+    //       "threads" => $group->threads,
+    //     ];
+    //   });
+    // }
 }
