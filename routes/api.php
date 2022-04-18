@@ -47,7 +47,7 @@ Route::get('/ressource/{type}/{anid}', [RessourceController::class, 'getAvatar']
 // Route::get('/ressource-thread/{anid}', [RessourceController::class, 'getAvatar']);
 
 ########################################################
-Route::get('/test', [UserController::class, 'test']);
+Route::post('/test', [BookmarkController::class, 'test']);
 
 Route::group([
     'middleware' => [
@@ -77,7 +77,9 @@ Route::group([
     Route::post('/post-thread', [ThreadController::class, 'postThread']);
     Route::post('/post-avatar', [UserController::class, 'postAvatar']);
 
-    
+    Route::put('/update-bookmark', [BookmarkController::class, 'updateBookmark']);
+
+    Route::delete('/deactivate-bookmark', [BookmarkController::class, 'deactivateBookmark']);
 });
 
 Route::fallback(function () {

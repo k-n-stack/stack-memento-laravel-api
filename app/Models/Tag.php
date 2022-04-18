@@ -15,6 +15,14 @@ class Tag extends Model
         'name',
     ];
 
+    protected $hidden = [
+        'id',
+        'validated_at',
+        'created_at',
+        'updated_at',
+        'pivot',
+    ];
+
     public function bookmarks() {
         return $this->belongsToMany(Bookmark::class);
     }

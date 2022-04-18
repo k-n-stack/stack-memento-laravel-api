@@ -24,11 +24,11 @@ class BookmarkController extends Controller
 
     public function postBookmark (Request $request) {
 
-        if (empty($request->thread_ids)) {
+        if (empty($request->thread_anids)) {
             return response()->json(['status' => 'at least one thread is required']);
         }
 
-        $threads = Thread::whereIn('id', $request->thread_ids)->get();
+        $threads = Thread::whereIn('alphanumeric_id', $request->thread_anids)->get();
         foreach ($threads as $thread) {
             if ($thread->user_id !== Auth::id()) {
                 return response()->json(['status' => 'error occured with thread id']);
@@ -68,7 +68,8 @@ class BookmarkController extends Controller
             'url' => $request->url,
         ]);
         
-        foreach ($request->thread_ids as $thread_id) {
+        foreach ($threads as $thread) {
+            $thread_id = $thread->id;
             $bookmark->threads()->attach($thread_id);
         }
 
@@ -99,6 +100,78 @@ class BookmarkController extends Controller
             ]);
         }
 
-        return response()->json(['status' => 'bookmark added']);
+        return response()->json([
+            'status' => 'bookmark added',
+            'thread_anids' => $request->thread_anids,
+            'bookmark' => $bookmark->getBookmarkDetails(),
+        ]);
+    }
+
+    public function updateBookmark (Request $request) {
+        $bookmark = Bookmark::find($request->id);
+
+        if ($bookmark->getPosterId() !== Auth::id()) {
+            return response()->json(['status' => 'Bookmark owner error']);         
+        }
+
+        $validator = Validator::make($request->all(), [
+            'description' => ['string', 'max:128'],
+            'url' => ['url', 'string', 'max: 512'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+
+        if (!empty($request->url)) {
+            $bookmark->url = $request->url;
+        }
+        if (!empty($request->description)) {
+            $bookmark->description = $request->description;
+        }
+
+        if (!$bookmark->isDirty()) {
+            return response()->json(['status' => 'No attribute changes']);
+        }
+
+        $bookmark->save();
+        
+        return response()->json([
+            'status' => 'Bookmark updated',
+            'bookmark' => $bookmark,
+        ]);
+    }
+
+    public function test () {
+        $bookmark = Bookmark::find(5);
+        return $bookmark->getBookmarkDetails();
+    }
+
+    public function deactivateBookmark (Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'id' => ['required', 'int'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+
+        $bookmark = Bookmark::find($request->id);
+
+        if (empty($bookmark)) {
+            return response()->json(['status' => 'no bookmark found']);
+        }
+
+        if (Auth::id() !== $bookmark->getPosterId()) {
+            return response()->json(['status' => 'not authorized']);
+        }
+
+        $bookmark->delete();
+
+        return response()->json([
+            'status' => 'bookmark deleted',
+            'bookmark' => $bookmark,
+        ]);
     }
 }
