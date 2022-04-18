@@ -28,9 +28,10 @@ class AuthController extends Controller
         }
 
         $user = User::create([
+            'alphanumeric_id' => $this->generateANID(8),
             'email' => $request->email,
             'pseudonym' => $request->pseudonym,
-            'password' => Hash::make($request->password)
+            'password' => Hash::make($request->password),
         ]);
 
         $user->sendEmailVerificationNotification();
@@ -54,6 +55,7 @@ class AuthController extends Controller
 
     public function login (Request $request) {
         $errorResponse = [
+            'alphanumeric_id',
             'status' => 'unauthenticated',
             'token' => '',
             'token_type' => '',
@@ -90,12 +92,13 @@ class AuthController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
+            'alphanumeric_id' => $user->alphanumeric_id,
             'status' => 'authenticated',
             'token' => explode("|", $token)[1],
             'token_type' => 'Bearer',
             'email' => $user->email,
             'pseudonym' => $user->pseudonym,
-            'image_url' => $user->image_url,
+            'image_url' => "ressource/avatars/$user->alphanumeric_id",
             'email_verified_at' => $user->email_verified_at,
         ]);
     }
@@ -106,12 +109,12 @@ class AuthController extends Controller
         return ['status' => 'logout'];
     }
 
-    // public function mail () {
-    //     $data['title'] = "This is Test Mail Tuts Make";
-
-    //     Mail::to('khin.nicolas@gmail.com')
-    //         ->send(new Service());
-
-    //     return ['end of mail controller method'];
-    // }
+    function generateANID($length) {
+        $alphaNumerics = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        $random = "";
+        for ($i = 0; $i < $length; $i++) {
+            $random .= $alphaNumerics[rand(0, strlen($alphaNumerics) - 1)];
+        }
+        return $random;
+    }
 }

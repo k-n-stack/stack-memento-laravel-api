@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Models\User;
 use App\Models\Bookmark;
@@ -11,6 +12,23 @@ use App\Models\Bookmark;
 class Comment extends Model
 {
     use HasFactory;
+    use SoftDeletes;
+
+    protected $fillable = [
+        'bookmark_id',
+        'poster_id',
+        'body',
+    ];
+
+    protected $hidden = [
+        'id',
+        'poster_id',
+        'parent_id',
+        'bookmark_id',
+        'validated_at',
+        'updated_at',
+        'deleted_at',
+    ];
 
     public function parent() {
         return $this->belongsTo(Comment::class, 'parent_id');
@@ -30,15 +48,19 @@ class Comment extends Model
 
     // !!!! RECURSIVE
     public function getNestedChilds() {
-        return !empty($this->deleted_at) ? null : [
-            "posted_at" => $this->validated_at,
-            "poster_name" => $this->user->pseudonym,
-            "poster_image_url" => $this->user->image_url,
-            "body" => $this->body,
-            "childs" => empty($this->childs) ? [] : $this->childs->map(function ($child) {
-                return $child->getNestedChilds();
-            })
-        ];
+        
+        // return [
+        //     $this->user,
+        //     "childs" => empty($this->childs) ? [] : $this->childs->map(function ($child) {
+        //         return $child->getNestedChilds();
+        //     })
+        // ];
+
+        $this->user;
+        $this->childs = empty($this->childs) ? [] : $this->childs->map(function ($child) {
+            return $child->getNestedChilds();
+        });
+        return $this;
     }
 
 }
