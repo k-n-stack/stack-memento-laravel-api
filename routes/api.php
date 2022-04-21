@@ -76,10 +76,12 @@ Route::group([
     Route::post('/post-bookmark', [BookmarkController::class, 'postBookmark']);
     Route::post('/post-thread', [ThreadController::class, 'postThread']);
     Route::post('/post-avatar', [UserController::class, 'postAvatar']);
+    Route::post('/post-bookmark-tags', [BookmarkController::class, 'postBookmarkTags']);
 
     Route::put('/update-bookmark', [BookmarkController::class, 'updateBookmark']);
 
     Route::delete('/deactivate-bookmark', [BookmarkController::class, 'deactivateBookmark']);
+    Route::delete('/delete-bookmark-tags', [BookmarkController::class, 'deleteBookmarkTags']);
 });
 
 Route::fallback(function () {

@@ -75,21 +75,9 @@ class BookmarkController extends Controller
 
         if (!empty($request->tags)) {
 
-            $_tags = [];
+            $tags = Tag::insertTags($request->tags);
+            $bookmark->tags()->syncWithoutDetaching($tags);
 
-            foreach ($request->tags as $tag) {
-                $_tags[] = Tag::firstOrCreate([
-                    'name' => $tag,
-                ]);
-            }
-
-            $_tags = array_map(function ($tag) {
-                return $tag->id;
-            }, $_tags);
-    
-            foreach ($_tags as $tag_id) {
-                $bookmark->tags()->attach($tag_id);
-            }
         }
 
         if (!empty($request->comment)) {
@@ -105,6 +93,75 @@ class BookmarkController extends Controller
             'thread_anids' => $request->thread_anids,
             'bookmark' => $bookmark->getBookmarkDetails(),
         ]);
+    }
+
+    public function postBookmarkTags (Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'bookmark_id' => ['required', 'int'],
+            'tags' => ['required', 'array'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+
+        $bookmark = Bookmark::find($request->bookmark_id);
+
+        if (empty($bookmark)) {
+            return response()->json(['status' => 'no bookmark']); 
+        }
+
+        if ($bookmark->getPosterId() !== Auth::id()) {
+            return response()->json(['status' => 'Bookmark owner error']); 
+        }
+
+        $tags = Tag::insertTags($request->tags);
+
+        $bookmark->tags()->syncWithoutDetaching($tags);
+
+        return response()->json([
+            'status' => 'tags added to bookmark',
+            'bookmark' => $bookmark->getBookmarkDetails(),
+        ]); 
+
+    }
+
+    public function deleteBookmarkTags (Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'bookmark_id' => ['required', 'int'],
+            'tags' => ['required', 'array'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+
+        $bookmark = Bookmark::find($request->bookmark_id);
+
+        if (empty($bookmark)) {
+            return response()->json(['status' => 'no bookmark']); 
+        }
+
+        if ($bookmark->getPosterId() !== Auth::id()) {
+            return response()->json(['status' => 'Bookmark owner error']); 
+        }
+
+        $tags = array_map(function ($tag) {
+            $_tag = Tag::firstWhere('name', $tag);
+            if (!empty($_tag)) {
+                return $_tag->id;
+            }
+        }, $request->tags);
+
+        $bookmark->tags()->detach($tags);
+
+        return response()->json([
+            'status' => 'tags removed from bookmark',
+            'bookmark' => $bookmark->getBookmarkDetails(),
+        ]);
+
     }
 
     public function updateBookmark (Request $request) {
@@ -138,7 +195,7 @@ class BookmarkController extends Controller
         
         return response()->json([
             'status' => 'Bookmark updated',
-            'bookmark' => $bookmark,
+            'bookmark' => $bookmark->getBookmarkDetails(),
         ]);
     }
 
