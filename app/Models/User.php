@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -17,7 +18,7 @@ use App\Models\Bookmark;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -25,6 +26,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $fillable = [
+        'alphanumeric_id',
         'pseudonym',
         'email',
         'password',
@@ -36,8 +38,14 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $hidden = [
+        'id',
         'password',
         'remember_token',
+        'email',
+        'email_verified_at',
+        'is_admin',
+        'deleted_at',
+        'updated_at',
     ];
 
     /**
@@ -66,7 +74,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     public function ownGroups() {
-        return $this->hasMany(Group::class);
+        return $this->hasMany(Group::class, 'owner_id');
     }
 
     public function votes() {
@@ -80,4 +88,69 @@ class User extends Authenticatable implements MustVerifyEmail
     public function pinnedThreads() {
         return $this->belongsToMany(Thread::class, 'pinned_threads');
     }
+
+    public function countThreads () {
+        return count($this->threads);
+    }
+
+    public function countBookmarks () {
+        return count($this->getBookmarks());
+    }
+
+    public function countVotes () {
+        return count($this->votes);
+    }
+
+    public function getBookmarks () {
+        $bookmarks = [];
+        $threads = $this->threads;
+        foreach ($threads as $thread) {
+            foreach ($thread->bookmarks as $bookmark) {
+                array_push($bookmarks, $bookmark);
+            }
+        }
+        return $bookmarks;
+    }
+
+    public function getLastBookmarkDate () {
+        $collection = collect($this->getBookmarks());
+        $last = $collection->where('id', $collection->max('id'))->first();
+
+        if (empty($last)) {
+            return "";
+        }
+
+        $date = $last->created_at;
+        return date("Y-m-d H:i:s", strtotime($date));
+    }
+
+    public function getLastCommentDate () {
+        $comment = $this->comments->last();
+
+        if (empty($comment)) {
+            return "";
+        }
+
+        $date = $comment->created_at;
+        return date('Y-m-d H:i:s', strtotime($date));
+    }
+
+    public function countRedirections () {
+        $redirections = $this->redirections;
+        if (empty($redirections)) {
+            return 0;
+        }
+
+        $count = 0;
+        foreach ($redirections as $redirection) {
+            $count += $redirection->pivot->count;
+        }
+
+        return $count;
+    }
+
+    public function countComments () {
+        return count($this->comments);
+    }
+
 }

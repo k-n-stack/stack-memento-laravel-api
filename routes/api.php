@@ -2,11 +2,13 @@
 
 
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FriendController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\RedirectionController;
+use App\Http\Controllers\RessourceController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\ThreadController;
@@ -26,9 +28,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/login', [App\Http\Controllers\AuthController::class, 'login']);
-Route::post('/register', [App\Http\Controllers\AuthController::class, 'register']);
-Route::get('/email-verify/{id}/{hash}', [App\Http\Controllers\AuthController::class, 'verifyEmail'])->name('verification.verify');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::get('/email-verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])->name('verification.verify');
 
 Route::get('/login', [
     'as' => 'login',
@@ -41,12 +43,16 @@ Route::get('/not-verified', function () {
     return ['status' => 'not verified'];
 })->name('verification.notice');
 
-Route::get('/test', function () {return redirect('http://localhost:3000');});
+Route::get('/ressource/{type}/{anid}', [RessourceController::class, 'getAvatar']);
+// Route::get('/ressource-thread/{anid}', [RessourceController::class, 'getAvatar']);
+
+########################################################
+Route::post('/test', [BookmarkController::class, 'test']);
 
 Route::group([
     'middleware' => [
         'auth:sanctum',
-        'verified'
+        'verified',
     ],
 ], function () {
     Route::get('/user-thread-full', [ThreadController::class, 'allFullOfAuth']);
@@ -60,9 +66,22 @@ Route::group([
     Route::get('/user-vote-count', [VoteController::class, 'countAllOfAuth']);
     Route::get('/user-vote', [VoteController::class, 'allOfAuth']);
     Route::get('/user-pinned', [ThreadController::class, 'pinnedOfAuth']);
-
+    Route::get('/user-image', [UserController::class, 'getUserImage']);
+    Route::get('/user-subscribed-group', [GroupController::class, 'getSubscribedGroups']);
+    Route::get('/user-own-group', [GroupController::class, 'getOwnedGroups']);
+    Route::get('/user-fellows', [FriendController::class, 'getFellows']);
+    
     Route::get('/global-thread-full', [ThreadController::class, 'allFullOfGlobal']);
+    
+    Route::post('/post-bookmark', [BookmarkController::class, 'postBookmark']);
+    Route::post('/post-thread', [ThreadController::class, 'postThread']);
+    Route::post('/post-avatar', [UserController::class, 'postAvatar']);
+    Route::post('/post-bookmark-tags', [BookmarkController::class, 'postBookmarkTags']);
 
+    Route::put('/update-bookmark', [BookmarkController::class, 'updateBookmark']);
+
+    Route::delete('/deactivate-bookmark', [BookmarkController::class, 'deactivateBookmark']);
+    Route::delete('/delete-bookmark-tags', [BookmarkController::class, 'deleteBookmarkTags']);
 });
 
 Route::fallback(function () {

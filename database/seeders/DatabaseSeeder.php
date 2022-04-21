@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
     {
         #### GLOBAL SEEDS ####
         User::create([
+            'alphanumeric_id' => '00000000',
             'pseudonym' => 'Global',
             'email' => 'global@stackmemento.com',
             'password' => Hash::make('password'),

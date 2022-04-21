@@ -16,6 +16,7 @@ class ThreadFactory extends Factory
         $visibilities = ['private', 'shareable', 'control', 'public'];
 
         return [
+            'alphanumeric_id' => $this->generateANID(8),
             'user_id' => $this->faker->numberBetween(1, 20),
             'title' => $this->faker->jobTitle(),
             'visibility' => $visibilities[rand(0, 3)],
@@ -31,5 +32,14 @@ class ThreadFactory extends Factory
                 'user_id' => '1',
             ];
         });
+    }
+
+    public function generateANID($length) {
+        $alphaNumerics = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        $random = "";
+        for ($i = 0; $i < $length; $i++) {
+            $random .= $alphaNumerics[rand(0, strlen($alphaNumerics) - 1)];
+        }
+        return $random;
     }
 }

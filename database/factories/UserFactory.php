@@ -16,6 +16,7 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
+            'alphanumeric_id' => $this->generateANID(8),
             'pseudonym' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
@@ -38,5 +39,14 @@ class UserFactory extends Factory
                 'email_verified_at' => null,
             ];
         });
+    }
+
+    public function generateANID($length) {
+        $alphaNumerics = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        $random = "";
+        for ($i = 0; $i < $length; $i++) {
+            $random .= $alphaNumerics[rand(0, strlen($alphaNumerics) - 1)];
+        }
+        return $random;
     }
 }
