@@ -14,4 +14,16 @@ class CommentController extends Controller
     public function countAllOfAuth() {
         return Auth::user()->comments->count();
     }
+
+    public function deactivateComments(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'comments' => ['required', 'array'],
+        ]);
+
+        if ($validator->fails()) {
+            return $response->json($validator->errors());
+        }
+
+        
+    }
 }

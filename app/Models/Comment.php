@@ -21,7 +21,7 @@ class Comment extends Model
     ];
 
     protected $hidden = [
-        'id',
+        // 'id',
         'poster_id',
         'parent_id',
         'bookmark_id',
@@ -47,7 +47,7 @@ class Comment extends Model
     }
 
     // !!!! RECURSIVE
-    public function getNestedChilds() {
+    public function getNestedChilds () {
         
         // return [
         //     $this->user,
@@ -61,6 +61,10 @@ class Comment extends Model
             return $child->getNestedChilds();
         });
         return $this;
+    }
+
+    public function getBookmarkId () {
+        return $this->bookmark->id;
     }
 
 }

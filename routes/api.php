@@ -82,6 +82,7 @@ Route::group([
 
     Route::delete('/deactivate-bookmark', [BookmarkController::class, 'deactivateBookmark']);
     Route::delete('/delete-bookmark-tags', [BookmarkController::class, 'deleteBookmarkTags']);
+    Route::delete('/delete-comments', [CommentController::class, 'deactivateComments']);
 });
 
 Route::fallback(function () {
