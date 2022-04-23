@@ -73,7 +73,7 @@ class BookmarkController extends Controller
             $bookmark->threads()->attach($thread_id);
         }
 
-        if (!empty($request->tags)) {
+        if (!empty(array_filter($request->tags))) {
 
             $tags = Tag::insertTags($request->tags);
             $bookmark->tags()->syncWithoutDetaching($tags);

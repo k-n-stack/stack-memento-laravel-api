@@ -17,7 +17,7 @@ class CommentFactory extends Factory
             'poster_id' => $this->faker->numberBetween(1, 20),
             'bookmark_id' => $this->faker->numberBetween(1, 99),
             'body' => $this->faker->realText(100),
-            'validated_at' => $this->faker->date(),
+            // 'validated_at' => $this->faker->date(),
         ];
     }
 }

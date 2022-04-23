@@ -21,11 +21,9 @@ class Comment extends Model
     ];
 
     protected $hidden = [
-        'id',
         'poster_id',
         'parent_id',
         'bookmark_id',
-        'validated_at',
         'updated_at',
         'deleted_at',
     ];
