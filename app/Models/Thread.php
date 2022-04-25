@@ -37,6 +37,10 @@ class Thread extends Model
         'comment_count',
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d',
+    ];
+
     public function getRedirectionCountAttribute () {
         return isset($this->attributes['redirection_count']) ? 
             $this->attributes['redirection_count'] : 0;
