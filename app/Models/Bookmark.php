@@ -75,16 +75,19 @@ class Bookmark extends Model
 
     public function getBookmarkDetails () {
 
+        $_bookmark = self::find($this->id);
+
         $this->redirection_count = array_sum($this->users->map(function ($redirection) {
             return $redirection->pivot->count;
         })->toArray());
 
-        $this->vote_count = $this->votes->count();
-        $this->comments_count = $this->comments->count();
-        $this->comments = $this->comments->map(function ($comment) {
-            return $comment->getNestedChilds();
-        });
+        $this->vote_count = $_bookmark->votes->count();
+        $this->comment_count = $_bookmark->comments->count();
 
+        $this->comments = $_bookmark->comments->map(function ($comment) {
+            return empty($comment->parent_id) ? $comment->getNestedChilds() : null;
+        })->filter()->values();
+ 
         $this->tags;
 
         return $this;

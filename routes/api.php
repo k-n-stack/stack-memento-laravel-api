@@ -76,6 +76,7 @@ Route::group([
     Route::post('/post-thread', [ThreadController::class, 'postThread']);
     Route::post('/post-avatar', [UserController::class, 'postAvatar']);
     Route::post('/post-bookmark-tags', [BookmarkController::class, 'postBookmarkTags']);
+    Route::post('/post-comment', [CommentController::class, 'postComment']);
 
     Route::put('/update-bookmark', [BookmarkController::class, 'updateBookmark']);
     Route::put('/validate-comments', [CommentController::class, 'validateComments']);

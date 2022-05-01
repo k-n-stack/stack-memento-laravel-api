@@ -92,6 +92,7 @@ class Thread extends Model
         }, 0);
 
         $this->user;
+        $this->groups;
         $this->redirection_count = $redirectionCount;
         $this->vote_count = $voteCount;
         $this->comment_count = $commentCount;

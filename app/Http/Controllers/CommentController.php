@@ -92,4 +92,64 @@ class CommentController extends Controller
         ]);
 
     }
+
+    public function postComment (Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'body' => ['required', 'string', 'max:512'],
+            'bookmark_id'=> ['required', 'integer'],
+            'parent_id' => ['integer'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+
+        $bookmark = Bookmark::find($request->bookmark_id);
+
+        $validated_at = date("Y-m-d H:i:s");
+        $allFullPrivate = true;
+
+        $bookmark->threads->each(function ($thread) use (&$allFullPrivate, &$validated_at) {
+            if ($thread->visibility !== 'private') {
+                $allFullPrivate = false;
+            }
+            if ($thread->visibility !== 'public') {
+                $validated_at = null;
+            }
+        });
+
+        if ($allFullPrivate) {
+            return response()->json(['status' => 'cannot comment on bookmark that belong to full private threads only']);
+        }
+
+        $doParentExist = false;
+
+        if (!empty($request->parent_id)) {
+            $bookmark->comments->each(function ($comment) use (&$doParentExist, $request) {
+                if ($comment->id === $request->parent_id) {
+                    $doParentExist = true;
+                }
+            });
+
+            if (!$doParentExist) {
+                return response()->json(['status' => 'cannot have a parent comment in another bookmark']);
+            }
+        }
+
+        $comment = Comment::create([
+            'poster_id' => Auth::id(),
+            'parent_id' => empty($request->parent_id) ? null : $request->parent_id,
+            'bookmark_id' => $request->bookmark_id,
+            'body' => $request->body,
+            'validated_at' => $validated_at,
+        ]);
+
+        $bookmark = Bookmark::find($bookmark->id);
+
+        return response()->json([
+            'status' => 'comment added to bookmark',
+            'bookmark' => $bookmark->getBookmarkDetails(),
+        ]);
+    }
 }

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 use Illuminate\Database\Seeder;
@@ -37,7 +38,7 @@ class DatabaseSeeder extends Seeder
             'remember_token' => Str::random(10),
             'deleted_at' => null,
         ]);
-
+        File::makeDirectory('./storage/app/avatars/00000000');
         Thread::factory()->count(20)->forGlobal()->create();
 
         #### RANDOM USERS SEEDS ####

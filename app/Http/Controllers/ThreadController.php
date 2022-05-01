@@ -35,7 +35,9 @@ class ThreadController extends Controller
     }
 
     public function pinnedOfAuth() {
-        return Auth::user()->pinnedThreads;
+        return Auth::user()->pinnedThreads->map(function ($thread) {
+            return $thread->getThreadDetails();
+        });
     }
 
     public function postThread (Request $request) {

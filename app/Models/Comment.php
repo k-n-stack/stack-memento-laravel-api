@@ -17,12 +17,13 @@ class Comment extends Model
     protected $fillable = [
         'bookmark_id',
         'poster_id',
+        'parent_id',
         'body',
+        'validated_at',
     ];
 
     protected $hidden = [
         'poster_id',
-        'parent_id',
         'bookmark_id',
         'updated_at',
         'deleted_at',
@@ -46,14 +47,6 @@ class Comment extends Model
 
     // !!!! RECURSIVE
     public function getNestedChilds() {
-        
-        // return [
-        //     $this->user,
-        //     "childs" => empty($this->childs) ? [] : $this->childs->map(function ($child) {
-        //         return $child->getNestedChilds();
-        //     })
-        // ];
-
         $this->user;
         $this->childs = empty($this->childs) ? [] : $this->childs->map(function ($child) {
             return $child->getNestedChilds();
