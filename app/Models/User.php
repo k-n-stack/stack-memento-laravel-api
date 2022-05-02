@@ -54,8 +54,18 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'email_verified_at' => 'datetime:Y-m-d H:i',
+        'created_at' => 'datetime:Y-m-d H:i',
     ];
+
+    protected $appends = [
+        'image_url',
+    ];
+
+    public function getImageUrlAttribute()
+    {
+        return 'ressource/avatars/'.$this->alphanumeric_id;
+    }
 
     public function threads() {
         return $this->hasMany(Thread::class);
@@ -121,7 +131,7 @@ class User extends Authenticatable implements MustVerifyEmail
         }
 
         $date = $last->created_at;
-        return date("Y-m-d H:i:s", strtotime($date));
+        return date("Y-m-d H:i", strtotime($date));
     }
 
     public function getLastCommentDate () {
@@ -132,7 +142,7 @@ class User extends Authenticatable implements MustVerifyEmail
         }
 
         $date = $comment->created_at;
-        return date('Y-m-d H:i:s', strtotime($date));
+        return date('Y-m-d H:i', strtotime($date));
     }
 
     public function countRedirections () {
@@ -151,6 +161,22 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function countComments () {
         return count($this->comments);
+    }
+
+    public function getFellowDetails () {
+        $this->threads->map(function ($thread) {
+            return $thread->visibility === "private" ? 
+                null : $thread->getThreadDetails();
+        });
+        $this->total_bookmarks = $this->countBookmarks();
+        $this->total_threads = $this->countThreads();
+        $this->total_redirection = $this->countRedirections();
+        $this->total_comments = $this->countComments();
+        $this->total_votes = $this->countVotes();
+        $this->last_comment = $this->getLastCommentDate();
+        $this->last_bookmark = $this->getLastBookmarkDate();
+
+        return $this;
     }
 
 }

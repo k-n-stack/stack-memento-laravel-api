@@ -14,7 +14,6 @@ class GroupController extends Controller
         $group->subscribers;
         return $group;
       });
-
     }
 
     public function getOwnedGroups() {

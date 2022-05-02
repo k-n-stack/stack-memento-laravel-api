@@ -14,6 +14,7 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\ThreadController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VoteController;
+use App\Http\Controllers\TestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -47,7 +48,7 @@ Route::get('/ressource/{type}/{anid}', [RessourceController::class, 'getAvatar']
 // Route::get('/ressource-thread/{anid}', [RessourceController::class, 'getAvatar']);
 
 ########################################################
-Route::post('/test', [BookmarkController::class, 'test']);
+Route::get('/test', [TestController::class, 'test']);
 
 Route::group([
     'middleware' => [
