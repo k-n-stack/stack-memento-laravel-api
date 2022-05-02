@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Collection;
 
 use App\Models\Thread;
 use App\Models\User;
@@ -26,12 +27,25 @@ class ThreadController extends Controller
         return $this->allFullByUser(Auth::user());
     }
 
+    // public function allFullOfGlobal() {
+    //     $global = User::where('email', 'global@stackmemento.com')->first();
+
+    //     return array_values(array_filter($this->allFullByUser($global)->map(function ($thread) {
+    //         return count($thread["bookmarks"]) === 0 ? null : $thread;
+    //     })->toArray()));
+    // }
+
     public function allFullOfGlobal() {
         $global = User::where('email', 'global@stackmemento.com')->first();
 
-        return array_values(array_filter($this->allFullByUser($global)->map(function ($thread) {
-            return count($thread["bookmarks"]) === 0 ? null : $thread;
-        })->toArray()));
+        $test = $global->threads->map(function ($thread) {
+            $threadData['thread'] = $thread;
+            $threadData['bookmarks'] = $thread->getGlobalBookmarks();
+            return $threadData;
+        });
+
+        return $test;
+
     }
 
     public function pinnedOfAuth() {

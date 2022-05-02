@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+
 use App\Models\Bookmark;
 use App\Models\User;
 use App\Models\Friend;
@@ -104,5 +105,28 @@ class Thread extends Model
 
         return $this;
         
+    }
+
+    public function getGlobalBookmarks () {
+
+        $title = $this->title;
+        
+        $allNamedThreads = self::where('title', $title)
+            ->whereNotIn('visibility', ['private', 'shareable'])
+            ->get();
+
+        $bookmarks = [];
+
+        $allNamedThreads->map(function ($thread) use (&$bookmarks) {
+            $thread->bookmarks->map(function ($bookmark) use (&$bookmarks, $thread) {
+                $bookmark->user = $thread->user;
+                $bookmark->comments->each(function ($comment) {
+                    $comment->user;
+                });
+                $bookmarks[] = $bookmark;
+            });
+        });
+
+        return $bookmarks;
     }
 }
