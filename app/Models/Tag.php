@@ -26,4 +26,24 @@ class Tag extends Model
     public function bookmarks() {
         return $this->belongsToMany(Bookmark::class);
     }
+
+    public static function insertTags ($tags) {
+        if (empty($tags)) {
+            return [];
+        }
+
+        $_tags = [];
+
+        foreach ($tags as $tag) {
+            $_tags[] = Tag::firstOrCreate([
+                'name' => $tag,
+            ]);
+        }
+
+        $_tags = array_map(function ($tag) {
+            return $tag->id;
+        }, $_tags);
+
+        return $_tags;
+    }
 }

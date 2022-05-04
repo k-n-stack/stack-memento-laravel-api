@@ -29,13 +29,19 @@ class ThreadController extends Controller
     public function allFullOfGlobal() {
         $global = User::where('email', 'global@stackmemento.com')->first();
 
-        return array_values(array_filter($this->allFullByUser($global)->map(function ($thread) {
-            return count($thread["bookmarks"]) === 0 ? null : $thread;
-        })->toArray()));
+        $threads = $global->threads->map(function ($thread) {
+            $thread->bookmarks = $thread->getGlobalBookmarks();
+            return $thread;
+        });
+
+        return $threads;
+
     }
 
     public function pinnedOfAuth() {
-        return Auth::user()->pinnedThreads;
+        return Auth::user()->pinnedThreads->map(function ($thread) {
+            return $thread->getThreadDetails();
+        });
     }
 
     public function postThread (Request $request) {

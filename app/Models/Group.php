@@ -12,6 +12,20 @@ class Group extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:i',
+        'updated_at' => 'datetime:Y-m-d H:i',
+    ];
+
+    protected $appends = [
+        'image_url',
+    ];
+
+    public function getImageUrlAttribute()
+    {
+        return 'ressource/groups/'.$this->alphanumeric_id;
+    }
+
     public function subscribers() {
         return $this->belongsToMany(User::class);
     }

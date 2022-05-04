@@ -5,6 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\File;
+
+use Utils\Utils\generateANID;
 
 class UserFactory extends Factory
 {
@@ -15,8 +18,23 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        $anid = $this->generateANID(8);
+        $userPath = './storage/app/avatars/'.$anid;
+        $imagesPath = './database/images';
+
+        File::makeDirectory($userPath);
+
+        $images = File::files($imagesPath);
+        $images = array_map(function ($test) {
+            return $test->getFileName();
+        }, $images);
+        $index = rand(0, count($images) - 1);
+        $randomImagePath = $imagesPath.'/'.$images[$index];
+
+        File::copy($randomImagePath, $userPath.'/'.$images[$index]);
+
         return [
-            'alphanumeric_id' => $this->generateANID(8),
+            'alphanumeric_id' => $anid,
             'pseudonym' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),

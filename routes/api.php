@@ -14,6 +14,7 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\ThreadController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VoteController;
+use App\Http\Controllers\TestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -44,10 +45,8 @@ Route::get('/not-verified', function () {
 })->name('verification.notice');
 
 Route::get('/ressource/{type}/{anid}', [RessourceController::class, 'getAvatar']);
-// Route::get('/ressource-thread/{anid}', [RessourceController::class, 'getAvatar']);
 
-########################################################
-Route::post('/test', [BookmarkController::class, 'test']);
+Route::get('/test', [TestController::class, 'test']);
 
 Route::group([
     'middleware' => [
@@ -62,6 +61,7 @@ Route::group([
     Route::get('/user-redirection', [RedirectionController::class, 'allOfAuth']);
     Route::get('/user-redirection-count', [RedirectionController::class, 'countAllOfAuth']);
     Route::get('/user-comment', [CommentController::class, 'allOfAuth']);
+    Route::get('/user-invalid-comment', [CommentController::class, 'getAllInvalid']);
     Route::get('/user-comment-count', [CommentController::class, 'countAllOfAuth']);
     Route::get('/user-vote-count', [VoteController::class, 'countAllOfAuth']);
     Route::get('/user-vote', [VoteController::class, 'allOfAuth']);
@@ -70,16 +70,20 @@ Route::group([
     Route::get('/user-subscribed-group', [GroupController::class, 'getSubscribedGroups']);
     Route::get('/user-own-group', [GroupController::class, 'getOwnedGroups']);
     Route::get('/user-fellows', [FriendController::class, 'getFellows']);
-    
     Route::get('/global-thread-full', [ThreadController::class, 'allFullOfGlobal']);
     
     Route::post('/post-bookmark', [BookmarkController::class, 'postBookmark']);
     Route::post('/post-thread', [ThreadController::class, 'postThread']);
     Route::post('/post-avatar', [UserController::class, 'postAvatar']);
+    Route::post('/post-bookmark-tags', [BookmarkController::class, 'postBookmarkTags']);
+    Route::post('/post-comment', [CommentController::class, 'postComment']);
 
     Route::put('/update-bookmark', [BookmarkController::class, 'updateBookmark']);
+    Route::put('/validate-comments', [CommentController::class, 'validateComments']);
 
     Route::delete('/deactivate-bookmark', [BookmarkController::class, 'deactivateBookmark']);
+    Route::delete('/delete-bookmark-tags', [BookmarkController::class, 'deleteBookmarkTags']);
+    Route::delete('/delete-comments', [CommentController::class, 'deleteComments']);
 });
 
 Route::fallback(function () {
