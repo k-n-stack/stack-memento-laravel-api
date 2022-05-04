@@ -106,4 +106,24 @@ class Thread extends Model
         return $this;
         
     }
+
+    public function getGlobalBookmarks () {
+
+        $title = $this->title;
+
+        $allNamedThreads = self::where('title', $title)
+            ->whereNotIn('visibility', ['private', 'shareable'])
+            ->get();
+
+        $bookmarks = [];
+
+        $allNamedThreads->map(function ($thread) use (&$bookmarks) {
+            $thread->bookmarks->map(function ($bookmark) use (&$bookmarks, $thread) {
+                $bookmark->user = $thread->user;
+                $bookmarks[] = $bookmark->getBookmarkDetails();
+            });
+        });
+
+        return $bookmarks;
+    }
 }

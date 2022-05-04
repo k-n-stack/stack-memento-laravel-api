@@ -45,9 +45,7 @@ Route::get('/not-verified', function () {
 })->name('verification.notice');
 
 Route::get('/ressource/{type}/{anid}', [RessourceController::class, 'getAvatar']);
-// Route::get('/ressource-thread/{anid}', [RessourceController::class, 'getAvatar']);
 
-########################################################
 Route::get('/test', [TestController::class, 'test']);
 
 Route::group([
@@ -63,6 +61,7 @@ Route::group([
     Route::get('/user-redirection', [RedirectionController::class, 'allOfAuth']);
     Route::get('/user-redirection-count', [RedirectionController::class, 'countAllOfAuth']);
     Route::get('/user-comment', [CommentController::class, 'allOfAuth']);
+    Route::get('/user-invalid-comment', [CommentController::class, 'getAllInvalid']);
     Route::get('/user-comment-count', [CommentController::class, 'countAllOfAuth']);
     Route::get('/user-vote-count', [VoteController::class, 'countAllOfAuth']);
     Route::get('/user-vote', [VoteController::class, 'allOfAuth']);

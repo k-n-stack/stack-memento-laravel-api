@@ -15,6 +15,26 @@ class CommentController extends Controller
         return Auth::user()->comments;
     }
 
+    public function getAllInvalid () {
+
+        $comments = [];
+
+        $bookmarks = Auth::user()->getBookmarks();
+
+        foreach ($bookmarks as $bookmark) {
+            $bookmark->comments->each(function ($comment) use (&$comments) { 
+                if ($comment->poster_id === Auth::id() || !is_null($comment->validated_at)) {
+                    return null;
+                }
+                $comment->user;
+                $comment->bookmark->threads;
+                $comments[] = $comment;
+            });
+        }
+
+        return $comments;
+    }
+
     public function countAllOfAuth() {
         return Auth::user()->comments->count();
     }
@@ -55,10 +75,11 @@ class CommentController extends Controller
         ]);
     }
 
-    public function validateComments (Request $request) {
+    public function validateComments (Request $request, bool $isMobile) {
 
         $validator = Validator::make($request->all(), [
-            'comments' => ['required', 'array']
+            'comments' => ['required', 'array'],
+            'is_mobile' => ['boolean'],
         ]);
 
         if ($validator->fails()) {
@@ -86,10 +107,16 @@ class CommentController extends Controller
             $comment->save();
         });
 
-        return response()->json([
+        $response = $isMobile ? [
             'status' => 'comments validated',
             'bookmark' => $bookmark->getBookmarkDetails(),
-        ]);
+            'comment' => reset($comments),
+        ] : [
+            'status' => 'comments validated',
+            'bookmark' => $bookmark->getBookmarkDetails(),
+        ];
+
+        return response()->json($response);
 
     }
 
