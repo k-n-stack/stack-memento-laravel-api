@@ -72,14 +72,16 @@ class CommentController extends Controller
         return response()->json([
             'status' => 'comments deleted',
             'bookmark' => $bookmark->getBookmarkDetails(),
+
+            // for native
+            'comment_id' => $comments->first()->id,
         ]);
     }
 
-    public function validateComments (Request $request, bool $isMobile) {
+    public function validateComments (Request $request) {
 
         $validator = Validator::make($request->all(), [
             'comments' => ['required', 'array'],
-            'is_mobile' => ['boolean'],
         ]);
 
         if ($validator->fails()) {
@@ -107,16 +109,13 @@ class CommentController extends Controller
             $comment->save();
         });
 
-        $response = $isMobile ? [
+        return response()->json([
             'status' => 'comments validated',
             'bookmark' => $bookmark->getBookmarkDetails(),
-            'comment' => reset($comments),
-        ] : [
-            'status' => 'comments validated',
-            'bookmark' => $bookmark->getBookmarkDetails(),
-        ];
 
-        return response()->json($response);
+            // for native
+            'comment_id' => $comments->first()->id,
+        ]);
 
     }
 

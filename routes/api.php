@@ -71,6 +71,7 @@ Route::group([
     Route::get('/user-own-group', [GroupController::class, 'getOwnedGroups']);
     Route::get('/user-fellows', [FriendController::class, 'getFellows']);
     Route::get('/global-thread-full', [ThreadController::class, 'allFullOfGlobal']);
+    Route::get('/user-info', [UserController::class, 'getUserInfos']);
     
     Route::post('/post-bookmark', [BookmarkController::class, 'postBookmark']);
     Route::post('/post-thread', [ThreadController::class, 'postThread']);

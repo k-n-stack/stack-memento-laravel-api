@@ -17,6 +17,18 @@ class UserController extends Controller
         return $path;
     }
 
+    public function getUserInfos() {
+      $user = Auth::user();
+      return [
+        'alphanumeric_id' => $user->alphanumeric_id,
+        'status' => 'authenticated',
+        'email' => $user->email,
+        'pseudonym' => $user->pseudonym,
+        'image_url' => $user->image_url,
+        'email_verified_at' => $user->email_verified_at,
+      ];
+    }
+
     public function test () {
       $user = User::where('id', 1)->first();
 
