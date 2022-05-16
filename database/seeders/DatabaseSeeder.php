@@ -16,7 +16,6 @@ use App\Models\Search;
 use App\Models\Tag;
 use App\Models\Thread;
 use App\Models\User;
-use PHPUnit\TextUI\XmlConfiguration\Groups;
 
 use Faker\Factory as Faker;
 
@@ -33,7 +32,7 @@ class DatabaseSeeder extends Seeder
     {
 
 
-        $this->feedFriendThread(); die;
+        // $this->feedBookmarkTag(); die;
 
         ####################
         ### GLOBAL SEEDS ###
@@ -110,23 +109,10 @@ class DatabaseSeeder extends Seeder
         $this->feedRedirections();
         $this->feedVotes();
         $this->feedFriendThread();
+        $this->feedBookmarkThread();
+        $this->feedBookmarkTag();
 
-
-        // BookmarkThreads
-        for ($i = 0; $i < 100; $i++) {
-            DB::table('bookmark_thread')->insert([
-                'bookmark_id' => rand(1, 200),
-                'thread_id' => rand(1, 40),
-            ]);
-        }
-
-        // BookmarkTags
-        for ($i = 0; $i < 100; $i++) {
-            DB::table('bookmark_tag')->insert([
-                'bookmark_id' => rand(1, 200),
-                'tag_id' => rand(1, 100),
-            ]);
-        }
+        die;
 
         // GroupsUsers
         for ($i = 0; $i < 100; $i++) {
@@ -227,17 +213,110 @@ class DatabaseSeeder extends Seeder
     }
 
     public function feedFriendThread ($number = 20) {
+        // error_log(print_r(Thread::where('user_id', 2)->get(), 1)); die();
+
         $friendsIds = DB::table('friends')->get()->map(function ($friend) {
             return array(
                 'friend' => $friend->friend_id,
                 'user' => $friend->user_id,
+                'user_thread' => Thread::where('user_id', $friend->user_id)->get()->map(function ($thread) {
+                    return $thread->id;
+                })->toArray(),
             );
-        });
-        error_log(print_r($friendsIds, 1));
+        })->toArray();
 
-        // for ($i = $number; $i >= 0; $i--) {
-        //     DB::
-        // }
+        $friendsIds = array_map(function ($friend) {
+            return empty($friend['user_thread']) ? null : $friend;
+        }, $friendsIds);
+        
+        $friendsIds = array_filter($friendsIds);
+
+        $friendThread = array();
+
+        for ($i = $number; $i >= 0; $i--) {
+            $element = $friendsIds[array_rand($friendsIds)];
+            $friendId = $element['friend'];
+            $threadId = $element['user_thread'][array_rand($element['user_thread'])];
+            array_push($friendThread, array(
+                'friend' => $friendId,
+                'thread' => $threadId,
+            )); 
+        }
+
+        foreach ($friendThread as $_friendThread) {
+            if (!DB::table('friend_thread')
+            ->where('friend_id', $_friendThread['friend'])
+            ->where('thread_id', $_friendThread['thread'])
+            ->exists()) {
+                DB::table('friend_thread')->insert([
+                    'friend_id' => $_friendThread['friend'],
+                    'thread_id' => $_friendThread['thread'],
+                ]);
+            }
+        }
+
+    }
+
+    public function feedBookmarkThread () {
+        $bookmarkCount = DB::table('bookmarks')->count();
+        $threadStart = DB::table('threads')->where('user_id', 1)->count() + 1;
+        $threadEnd = DB::table('threads')->count();
+
+        for ($i = $bookmarkCount; $i > 0; $i--) {
+            DB::table('bookmark_thread')->insert([
+                'bookmark_id' => $i,
+                'thread_id' => rand($threadStart, $threadEnd),
+            ]);
+        }
+    }
+
+    public function feedBookmarkTag () {
+        $bookmarkCount = DB::table('bookmarks')->count();
+        $tagCount = DB::table('tags')->count();
+
+        for ($i = $bookmarkCount; $i > 0; $i--) {
+            $tagNumber = rand(0, 4);
+            if ($tagNumber === 0) {
+                continue;
+            }
+
+            $tags = array_fill(0, $tagNumber, 0);
+            $tags = array_map(function () use ($tagCount) {
+                return rand(1, $tagCount);
+            }, $tags);
+            $tags = array_unique($tags);
+
+            foreach ($tags as $tag) {
+                DB::table('bookmark_tag')->insert([
+                    'bookmark_id' => $i,
+                    'tag_id' => $tag,
+                ]);
+            }
+        }
+    }
+
+    public function feedGroupUser () {
+        $userCount = DB::table('users')->count();
+        $groupCount = DB::table('groups')->count();
+
+        for ($i = $groupCount; $i > 0; $i--) {
+            $groupOwner = Group::find($i)->owner_id;
+            $userNumber = rand(0, 3);
+            if ($userNumber === 0) {
+                continue;
+            }
+
+            $users = array_fill(0, $userNumber, 0);
+            $users = array_map(function () use ($userCount) {
+                return rand(1, $userCount);
+            }, $users);
+            $users = array_unique($users);
+
+            foreach ($users as $user) {
+                // serch owner id...
+            }
+        }
+
     }
 
     public function getRandomDistinctIds ($table, $fields, $start = 1) {
