@@ -69,7 +69,7 @@ class AuthController extends Controller
             'global@stackmemento.com',
         ];
                                                                 /* vvv AVOID ADMIN EMAIL TO CONNECT vvv */
-        if (!Auth::attempt($request->only('email', 'password')) /*|| in_array($request->email, $adminEmails)*/) {
+        if (!Auth::attempt($request->only('email', 'password')) || in_array($request->email, $adminEmails)) {
             return $errorResponse;
         }
 

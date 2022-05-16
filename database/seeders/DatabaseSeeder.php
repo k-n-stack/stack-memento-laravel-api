@@ -31,8 +31,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
-
-        // $this->feedBookmarkTag(); die;
+        // $this->feedPinnedThread(); die;
 
         ####################
         ### GLOBAL SEEDS ###
@@ -111,41 +110,24 @@ class DatabaseSeeder extends Seeder
         $this->feedFriendThread();
         $this->feedBookmarkThread();
         $this->feedBookmarkTag();
-
-        die;
-
-        // GroupsUsers
-        for ($i = 0; $i < 100; $i++) {
-            DB::table('group_user')->insert([
-                'group_id' => rand(1, 30),
-                'user_id' => rand(1, 20),
-                'sponsor_id' => 2,
-            ]);
-        }
+        $this->feedGroupUser();
+        $this->feedPinnedThread();
 
         // GroupsThreads
-        for ($i = 0; $i < 100; $i++) {
-            DB::table('group_thread')->insert([
-                'group_id' => rand(1, 30),
-                'thread_id' => rand(1, 40),
-            ]);
-        }
-
-        // PinnedThreads
-        for ($i = 0; $i < 100; $i++) {
-            DB::table('pinned_threads')->insert([
-                'user_id' => rand(1, 20),
-                'thread_id' => rand(1, 40),
-            ]);
-        }
+        // for ($i = 0; $i < 100; $i++) {
+        //     DB::table('group_thread')->insert([
+        //         'group_id' => rand(1, 30),
+        //         'thread_id' => rand(1, 40),
+        //     ]);
+        // }
         
         // RevokedGroupOwners
-        for ($i = 0; $i < 20; $i++) {
-            DB::table('revoked_group_owners')->insert([
-                'user_id' => rand(1, 20),
-                'group_id' => rand(1, 30),
-            ]);
-        }
+        // for ($i = 0; $i < 20; $i++) {
+        //     DB::table('revoked_group_owners')->insert([
+        //         'user_id' => rand(1, 20),
+        //         'group_id' => rand(1, 30),
+        //     ]);
+        // }
         
     }
 
@@ -312,11 +294,42 @@ class DatabaseSeeder extends Seeder
             }, $users);
             $users = array_unique($users);
 
+            $group = Group::find($i);
+            $ownerId = $group->owner_id;
+
             foreach ($users as $user) {
-                // serch owner id...
+                if ($user !== $ownerId) {
+                    DB::table('group_user')->insert([
+                        'group_id' => $group->id,
+                        'user_id' => $user,
+                    ]);
+                }
             }
         }
+    }
 
+    public function feedPinnedThread ($number = 20) {
+        for ($i = $number; $i >= 0; $i--) {
+            $userCount = DB::table('users')->count();
+            $threadCount = DB::table('threads')->count();
+
+            $user = rand(2, $userCount);
+            $thread = rand(1, $threadCount);
+
+            while (DB::table('pinned_threads')
+            ->where('user_id', $user)
+            ->where('thread_id', $thread)
+            ->exists()) {
+                error_log("loop:pinned\n");
+                $user = rand(2, $userCount);
+                $thread = rand(1, $threadCount);
+            };
+
+            DB::table('pinned_threads')->insert([
+                'user_id' => $user,
+                'thread_id' => $thread,
+            ]);
+        }
     }
 
     public function getRandomDistinctIds ($table, $fields, $start = 1) {
