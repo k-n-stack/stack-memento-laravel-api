@@ -61,7 +61,6 @@ class ThreadController extends Controller
             'user_id' => Auth::user()->id,
             'title' => $request->title,
             'visibility' => $request->visibility,
-            'image_url' => '0123456.png',
             'color' => $request->color,
         ]);
 

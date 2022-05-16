@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\DB;
+use App\Models\User;
 
 class GroupFactory extends Factory
 {
@@ -15,9 +17,8 @@ class GroupFactory extends Factory
     {
         return [
             'alphanumeric_id' => $this->generateANID(8),
-            'owner_id' => $this->faker->numberBetween(1, 20),
-            'name' => $this->faker->catchPhrase(),
-            'image_url' => '0123456.png',
+            'owner_id' => rand(2, DB::table('users')->count()),
+            'name' => substr($this->faker->catchPhrase(), 0, 32),
         ];
     }
 

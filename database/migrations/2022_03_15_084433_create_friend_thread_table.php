@@ -17,6 +17,7 @@ class CreateFriendThreadTable extends Migration
         Schema::create('friend_thread', function (Blueprint $table) {
             $table->unsignedBigInteger('friend_id');
             $table->unsignedBigInteger('thread_id');
+            $table->primary(['friend_id', 'thread_id']);
             $table->timestamps();
             $table->softDeletes();
         });

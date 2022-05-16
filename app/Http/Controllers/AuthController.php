@@ -98,7 +98,6 @@ class AuthController extends Controller
             'token_type' => 'Bearer',
             'email' => $user->email,
             'pseudonym' => $user->pseudonym,
-            // 'image_url' => "ressource/avatars/$user->alphanumeric_id",
             'image_url' => $user->image_url,
             'email_verified_at' => $user->email_verified_at,
         ]);

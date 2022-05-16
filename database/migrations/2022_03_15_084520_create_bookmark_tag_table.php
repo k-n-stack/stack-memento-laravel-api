@@ -16,6 +16,7 @@ class CreateBookmarkTagTable extends Migration
         Schema::create('bookmark_tag', function (Blueprint $table) {
             $table->unsignedBigInteger('bookmark_id');
             $table->unsignedBigInteger('tag_id');
+            $table->primary(['bookmark_id', 'tag_id']);
         });
     }
 

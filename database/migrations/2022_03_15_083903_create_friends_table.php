@@ -16,6 +16,7 @@ class CreateFriendsTable extends Migration
         Schema::create('friends', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('friend_id');
+            $table->primary(['user_id', 'friend_id']);
             $table->timestamp('validated_at')->nullable(); // User accept (or not) friend request
             $table->timestamps();
             $table->softDeletes();

@@ -12,24 +12,6 @@ class CreateForeignKeys extends Migration
      * @return void
      */
 
-    // USER (id, email, password, image_url, created_at, deleted_at)
-    // FRIEND (user_id, friend_id, is_valid, created_at, deleted_at)
-    // FRIEND_THREAD (friend_id, thread_id, created_at, deleted_at)
-    // THREAD (id, title, is_private, image_url, color, user_id, created_at, deleted_at)
-    // BOOKMARK (id, description, url, created_at, deleted_at)
-    // BOOKMARK_THREAD (bookmark_id, thread_id)
-    // BOOKMARK_TAG (bookmark_id, tag_id)
-    // COMMENT (id, poster_id, parent_id, posted_at, body, bookmark_id, is_valid, created_at, deleted_at)
-    // GROUP (id, name, owner_id, image_url, created_at, deleted_at)
-    // GROUP_USER (group_id, user_id, created_at, subscribed_at, deleted_at)
-    // GROUP_USER_SUGGESTION (group_id, user_id, sponsor_id, is_valid, created_at, deleted_at)
-    // GROUP_THREAD (group_id, thread_id, subscribed_at, deleted_at, ban_at)
-    // PINNED_THREAD (user_id, thread_id, created_at, deleted_at)
-    // REDIRECTION (user_id, bookmark_id, redirection_at)
-    // VOTE (user_id, bookmark_id, voted_at)
-    // TAG (id, name, verified)
-    // SEARCH (id, user_id, search_string, category, search_at)
-    // REVOKED_GROUP_OWNER (user_id, group_id, revoked_at)
     public function up()
     {
         Schema::table('friends', function(Blueprint $table) {

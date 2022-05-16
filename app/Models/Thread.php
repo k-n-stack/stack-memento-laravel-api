@@ -21,7 +21,6 @@ class Thread extends Model
         'user_id',
         'title',
         'visibility',
-        'image_url',
         'color',
     ];
 

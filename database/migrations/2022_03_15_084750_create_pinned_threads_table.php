@@ -17,6 +17,7 @@ class CreatePinnedThreadsTable extends Migration
         Schema::create('pinned_threads', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('thread_id');
+            $table->primary(['user_id', 'thread_id']);
             $table->timestamps();
             $table->softDeletes();
         });
