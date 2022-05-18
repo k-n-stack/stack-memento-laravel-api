@@ -14,7 +14,7 @@ class TagFactory extends Factory
     public function definition()
     {
         return [
-            'name' => substr($this->faker->company(), 0, 32),
+            'name' => substr($this->faker->firstNameFemale(), 0, 32),
             'validated_at' => $this->faker->dateTime(),
         ];
     }

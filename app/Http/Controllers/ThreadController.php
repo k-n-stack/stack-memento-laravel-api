@@ -70,6 +70,38 @@ class ThreadController extends Controller
         ]);
     }
 
+    public function deleteThread (Request $request) {
+        $validator = Validator::make($request->all(), [
+            'alphanumeric_id' => ['required', 'string'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+
+        $doThreadExists = Thread::where('alphanumeric_id', $request->alphanumeric_id)->exists();
+
+        if (!$doThreadExists) {
+            return response()->json(['status' => 'thread do not exists']);
+        }
+
+        $thread = Thread::where('alphanumeric_id', $request->alphanumeric_id)->get()->first();
+
+        error_log(print_r($thread->user_id, 1));
+
+        if (Auth::id() !== $thread->user_id) {
+            return response()->json(['status' => 'cannot delete thread from another user']);
+        }
+
+        $thread->delete();
+
+        return response()->json([
+            'status' => 'delete thread sucessfully',
+            'thread_anid' => $thread->alphanumeric_id,
+        ]);
+
+    }
+
     public function generateANID($length) {
         $alphaNumerics = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         $random = "";

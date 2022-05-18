@@ -62,8 +62,8 @@ class CreateForeignKeys extends Migration
             $table->foreign('thread_id')->references('id')->on('threads');
         });
         Schema::table('pinned_threads', function(Blueprint $table) {
-            $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('thread_id')->references('id')->on('threads');
+            $table->foreign('user_id')->references('id')->on('users');
         });
         Schema::table('revoked_group_owners', function(Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users');

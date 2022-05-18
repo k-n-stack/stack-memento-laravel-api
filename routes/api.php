@@ -71,6 +71,7 @@ Route::group([
     Route::get('/user-own-group', [GroupController::class, 'getOwnedGroups']);
     Route::get('/user-fellows', [FriendController::class, 'getFellows']);
     Route::get('/global-thread-full', [ThreadController::class, 'allFullOfGlobal']);
+    Route::get('/tag', [TagController::class, 'getAll']);
     
     Route::post('/post-bookmark', [BookmarkController::class, 'postBookmark']);
     Route::post('/post-thread', [ThreadController::class, 'postThread']);
@@ -84,6 +85,7 @@ Route::group([
     Route::delete('/deactivate-bookmark', [BookmarkController::class, 'deactivateBookmark']);
     Route::delete('/delete-bookmark-tags', [BookmarkController::class, 'deleteBookmarkTags']);
     Route::delete('/delete-comments', [CommentController::class, 'deleteComments']);
+    Route::delete('/delete-thread', [ThreadController::class, 'deleteThread']);
 });
 
 Route::fallback(function () {
