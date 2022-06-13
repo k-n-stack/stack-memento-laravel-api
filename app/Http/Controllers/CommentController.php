@@ -75,7 +75,7 @@ class CommentController extends Controller
         ]);
     }
 
-    public function validateComments (Request $request, bool $isMobile) {
+    public function validateComments (Request $request) {
 
         $validator = Validator::make($request->all(), [
             'comments' => ['required', 'array'],
@@ -106,6 +106,8 @@ class CommentController extends Controller
             $comment->validated_at = date('Y-m-d H:i:s');
             $comment->save();
         });
+
+        $isMobile = $request->input('is_mobile');
 
         $response = $isMobile ? [
             'status' => 'comments validated',

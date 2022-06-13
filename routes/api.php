@@ -89,5 +89,5 @@ Route::group([
 });
 
 Route::fallback(function () {
-    return ['status' => 'unauthorized'];
+    return response()->json(['status' => 'unauthorized'], 401);
 });

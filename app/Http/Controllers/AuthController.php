@@ -70,7 +70,7 @@ class AuthController extends Controller
         ];
                                                                 /* vvv AVOID ADMIN EMAIL TO CONNECT vvv */
         if (!Auth::attempt($request->only('email', 'password')) || in_array($request->email, $adminEmails)) {
-            return $errorResponse;
+            return response()->json($errorResponse, 401);
         }
 
         $user = User::where('email', $request['email'])->firstOrFail();
