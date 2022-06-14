@@ -32,7 +32,8 @@ class RessourceController extends Controller
         
     }
 
-    public function test() {
-        return Storage::disk('local')->files("avatars/test");
+    public function getEmailImage () {
+        $ressources = Storage::get("stmn-logo.png");
+        return response()->make($ressources, 200, ['content-type' => 'image/png']);
     }
 }

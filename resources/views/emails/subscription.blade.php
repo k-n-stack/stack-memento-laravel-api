@@ -125,7 +125,7 @@
                           <tbody>
                             <tr>
                               <td style="width:150px;">
-                                <img height="auto" src="http://localhost:8000/images/stmn-logo.png" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:14px;" width="150" />
+                                <img height="auto" src="https://api.stack.mn/api/ressource/email-image" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:14px;" width="150" />
                               </td>
                             </tr>
                           </tbody>

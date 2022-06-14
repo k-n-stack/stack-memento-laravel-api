@@ -48,6 +48,8 @@ Route::get('/ressource/{type}/{anid}', [RessourceController::class, 'getAvatar']
 
 Route::get('/test', [TestController::class, 'test']);
 
+Route::get('/ressource/email-image', [RessourceController::class, 'getEmailImage']);
+
 Route::group([
     'middleware' => [
         'auth:sanctum',
