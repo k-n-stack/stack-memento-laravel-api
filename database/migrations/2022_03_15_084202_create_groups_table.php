@@ -17,7 +17,7 @@ class CreateGroupsTable extends Migration
             $table->id();
             $table->string('alphanumeric_id', 8)->unique();
             $table->unsignedBigInteger('owner_id');
-            $table->string('name', 128); // to revert to 32
+            $table->string('name', 32); // to revert to 32
             $table->timestamps();
             $table->softDeletes();
         });

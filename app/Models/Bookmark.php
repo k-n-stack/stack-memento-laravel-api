@@ -11,6 +11,7 @@ use App\Models\Comment;
 use App\Models\Vote;
 use App\Models\Redirection;
 use App\Models\Tag;
+use App\Models\User;
 
 
 class Bookmark extends Model
@@ -92,6 +93,8 @@ class Bookmark extends Model
             return empty($comment->parent_id) ? $comment->getNestedChilds() : null;
         })->filter()->values();
  
+        $this->user = User::find($this->getPosterId());
+
         $this->tags;
 
         return $this;

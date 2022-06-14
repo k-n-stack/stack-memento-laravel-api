@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\DB;
+use App\Models\User;
 
 class ThreadFactory extends Factory
 {
@@ -14,22 +16,25 @@ class ThreadFactory extends Factory
     public function definition()
     {
         $visibilities = ['private', 'shareable', 'control', 'public'];
+        $userCount = DB::table('users')->count();
 
         return [
             'alphanumeric_id' => $this->generateANID(8),
-            'user_id' => $this->faker->numberBetween(1, 20),
-            'title' => $this->faker->jobTitle(),
+            'user_id' => $this->faker->numberBetween(2, $userCount),
+            'title' => substr($this->faker->jobTitle(), 0, 32),
             'visibility' => $visibilities[rand(0, 3)],
-            'image_url' => '0123456.png',
             'color' => sprintf('%06d', rand(0, 999999)),
         ];
     }
 
-    public function forGlobal()
+    public function forGlobal($title, $color)
     {
-        return $this->state(function (array $attributes) {
+        return $this->state(function (array $attributes) use ($title, $color) {
             return [
                 'user_id' => '1',
+                'title' => $title,
+                'color' => $color,
+                'visibility' => 'public',
             ];
         });
     }

@@ -69,8 +69,8 @@ class AuthController extends Controller
             'global@stackmemento.com',
         ];
                                                                 /* vvv AVOID ADMIN EMAIL TO CONNECT vvv */
-        if (!Auth::attempt($request->only('email', 'password')) /*|| in_array($request->email, $adminEmails)*/) {
-            return $errorResponse;
+        if (!Auth::attempt($request->only('email', 'password')) || in_array($request->email, $adminEmails)) {
+            return response()->json($errorResponse, 401);
         }
 
         $user = User::where('email', $request['email'])->firstOrFail();
@@ -98,7 +98,6 @@ class AuthController extends Controller
             'token_type' => 'Bearer',
             'email' => $user->email,
             'pseudonym' => $user->pseudonym,
-            // 'image_url' => "ressource/avatars/$user->alphanumeric_id",
             'image_url' => $user->image_url,
             'email_verified_at' => $user->email_verified_at,
         ]);

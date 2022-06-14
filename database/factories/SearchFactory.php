@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\DB;
+use App\Models\User;
 
 class SearchFactory extends Factory
 {
@@ -13,8 +15,10 @@ class SearchFactory extends Factory
      */
     public function definition()
     {
+        $userCount = DB::table('users')->count();
+
         return [
-            'user_id' => $this->faker->numberBetween(1, 20),
+            'user_id' => $this->faker->numberBetween(2, $userCount),
             'search_string' => $this->faker->realText(30),
         ];
     }

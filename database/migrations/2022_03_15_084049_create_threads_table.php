@@ -17,7 +17,7 @@ class CreateThreadsTable extends Migration
             $table->id();
             $table->string('alphanumeric_id', 8)->unique();
             $table->unsignedBigInteger('user_id');
-            $table->string('title', 128); // to revert to 32
+            $table->string('title', 32);
             $table->enum('visibility', ['private', 'shareable', 'control', 'public']);
             $table->string('color', 6)->default('000000');
             $table->timestamps();

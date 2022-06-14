@@ -17,7 +17,8 @@ class CreateGroupUserTable extends Migration
         Schema::create('group_user', function (Blueprint $table) {
             $table->unsignedBigInteger('group_id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('sponsor_id'); // ! When subscribtion req come from another user. Will be FK NULLABLE
+            $table->primary(['group_id', 'user_id']);
+            $table->unsignedBigInteger('sponsor_id')->nullable(); // ! When subscribtion req come from another user. Will be FK NULLABLE
             $table->timestamp('subscribed_at')->nullable(); // Group owner accept user subsciption
             $table->timestamps();
             $table->softDeletes();
