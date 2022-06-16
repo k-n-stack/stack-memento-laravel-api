@@ -94,7 +94,7 @@ class BookmarkController extends Controller
             'bookmark' => $bookmark->getBookmarkDetails(),
         ]);
     }
-
+//
     public function postBookmarkTags (Request $request) {
 
         return response()->setStatusCode()->json(['testpost']);
