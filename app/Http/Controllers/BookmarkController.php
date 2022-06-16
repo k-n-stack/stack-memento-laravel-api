@@ -97,6 +97,8 @@ class BookmarkController extends Controller
 
     public function postBookmarkTags (Request $request) {
 
+        return response()->setStatusCode()->json(['testpost']);
+
         $validator = Validator::make($request->all(), [
             'bookmark_id' => ['required', 'int'],
             'tags' => ['required', 'array'],
@@ -165,70 +167,6 @@ class BookmarkController extends Controller
     }
 
     public function updateBookmark (Request $request) {
-        $bookmark = Bookmark::find($request->id);
-
-        if ($bookmark->getPosterId() !== Auth::id()) {
-            return response()->json(['status' => 'Bookmark owner error']);         
-        }
-
-        $validator = Validator::make($request->all(), [
-            'description' => ['string', 'max:128'],
-            'url' => ['url', 'string', 'max: 512'],
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors());
-        }
-
-        if (!empty($request->url)) {
-            $bookmark->url = $request->url;
-        }
-        if (!empty($request->description)) {
-            $bookmark->description = $request->description;
-        }
-
-        if (!$bookmark->isDirty()) {
-            return response()->json(['status' => 'No attribute changes']);
-        }
-
-        $bookmark->save();
-        
-        return response()->json([
-            'status' => 'Bookmark updated',
-            'bookmark' => $bookmark->getBookmarkDetails(),
-        ]);
-    }
-
-    public function test () {
-        $bookmark = Bookmark::find(5);
-        return $bookmark->getBookmarkDetails();
-    }
-
-    public function deactivateBookmark (Request $request) {
-
-        $validator = Validator::make($request->all(), [
-            'id' => ['required', 'int'],
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors());
-        }
-
-        $bookmark = Bookmark::find($request->id);
-
-        if (empty($bookmark)) {
-            return response()->json(['status' => 'no bookmark found']);
-        }
-
-        if (Auth::id() !== $bookmark->getPosterId()) {
-            return response()->json(['status' => 'not authorized']);
-        }
-
-        $bookmark->delete();
-
-        return response()->json([
-            'status' => 'bookmark deleted',
-            'bookmark' => $bookmark,
-        ]);
+       return 'put';
     }
 }
